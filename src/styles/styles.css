@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base CSS */
+* {
+    font-size: 16px;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0 auto;
+    max-width: 3500px;
+}
+html {
+    scroll-behavior: smooth;
+}
+  
+/* Hide eye icon on input in MS Edge */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+/* Hide arrow in input type number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+img,
+video,
+svg,
+picture {
+    display: block;
+    max-width: 100%;
+}
+button:hover {
+    cursor: pointer;
+}
+  
+/* Custom CSS */
+@layer components {
+    /* Disable Highlighting */
+    .disable-highlight {
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+
+    /* Google Fonts */
+    .custom-font-moonrocks {
+      font-family: 'Rubik Moonrocks', serif;
+    }
+    .custom-font-rocksalt {
+      font-family: 'Rock Salt', sans-serif;
+    }
+
+    /* Transition Duration */
+    .custom-transition-duration {
+      transition: .3s;
+    }
+
+    /* Shadows */
+    .custom-shaddow-bottom {
+        box-shadow: 0 8px 32px 0 rgba(10, 19, 31, 0.37);
+    }
+    .custom-shadow-button {
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+}
