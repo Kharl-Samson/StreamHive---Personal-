@@ -13,7 +13,7 @@ export default [
         genres: ["Action", "Comedy", "Martial Arts", "Shounen", "Super Power"]
     },
     {
-        title : 'Kimetsu-No-Yaiba',
+        title : 'Kimetsu no Yaiba',
         description : `Since ancient times, rumors have abounded of man-eating demons lurking in the woods. Because of this, the local townsfolk never venture outside at night. Legend has it that a demon slayer also roams the night, hunting down these bloodthirsty demons. For young Tanjirou, these rumors will soon to become his harsh reality...\n\nEver since the death of his father, Tanjirou has taken it upon himself to support his family. Although their lives may be hardened by tragedy, they've found happiness. But that ephemeral warmth is shattered one day when Tanjirou finds his family slaughtered and the lone survivor, his sister Nezuko, turned into a demon. To his surprise, however, Nezuko still shows signs of human emotion and thought...\n\nThus begins Tanjirou's quest to fight demons and turn his sister human again.`,
         backgroundImage : demonSlayer,
         image : 'https://gogocdn.net/cover/kimetsu-no-yaiba.png',

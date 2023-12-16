@@ -44,7 +44,7 @@ export const HeroSection = () => {
     const [imageLoaded, setImageLoaded] = useState<boolean>(false)
   return (
     <div 
-        className="min-h-[57rem] custom-gradient-bg-dark flex lg:items-center" 
+        className="lg:pb-[26rem] custom-gradient-bg-dark flex" 
         style={{
             background: `radial-gradient(40.56% 36.62% at 63.93% 48.85%, 
               rgba(149, 149, 149, 0.00) 0%, rgba(0, 0, 0, 0.20) 100%), 
@@ -53,7 +53,7 @@ export const HeroSection = () => {
               url(${dataArray?.backgroundImage}) no-repeat lightgray 70% / cover`
         }}
     >
-        <div className="max-w-[80%] sm:max-w-none w-10/12 mx-auto mt-20 lg:mt-[-12rem] lg:flex gap-x-20">
+        <div className="max-w-[80%] sm:max-w-none w-10/12 mx-auto mt-[5rem] lg:mt-[11rem] lg:flex gap-x-20">
             <LazyLoadImage
               onLoad={() => setImageLoaded(true)}
               wrapperClassName={imageLoaded ? '' : 'blur-up'}

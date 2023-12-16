@@ -26,7 +26,7 @@ export const Navbar = ( { active } : NavbarProps ) => {
 
   return (
     <nav 
-        className={`px-7 lg:px-12 py-5 flex items-center justify-between 
+        className={`px-7 lg:px-12 py-5 flex items-center justify-between z-10
             sticky inset-0 custom-shaddow-bottom custom-transition-duration 
             ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}
     >
