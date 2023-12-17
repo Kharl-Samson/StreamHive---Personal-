@@ -51,7 +51,7 @@ export const Navbar = ( { active } : NavbarProps ) => {
                 <li 
                     className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
                         custom-transition-duration disable-highlight active:scale-95 font-normal
-                        ${active === "Home" && isCheckedTheme ? 'text-white font-semibold' : 'font-semibold'}`}
+                        ${active === "Home" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
                     onClick={() => navigate("/")}
                 >
                     Home
@@ -60,7 +60,7 @@ export const Navbar = ( { active } : NavbarProps ) => {
                 <li 
                     className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
                         custom-transition-duration disable-highlight active:scale-95 font-normal
-                        ${active === "Trending" && isCheckedTheme ? 'text-white font-semibold' : 'font-semibold'}`}
+                        ${active === "Trending" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
                     onClick={() => navigate("/Trending")}
                 >
                     Trending
@@ -69,12 +69,20 @@ export const Navbar = ( { active } : NavbarProps ) => {
                 <li 
                     className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
                         custom-transition-duration disable-highlight active:scale-95 font-normal
-                        ${active === "Latest" && isCheckedTheme ? 'text-white font-semibold' : 'font-semibold'}`}
+                        ${active === "Latest" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
                     onClick={() => navigate("/Latest")}
                 >
                     Latest
                 </li>
-                <li className="text-sm list-none cursor-pointer hover:text-custom-blue-1 custom-transition-duration disable-highlight active:scale-95">Popular</li>
+                {/* Popular */}
+                <li 
+                    className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
+                        custom-transition-duration disable-highlight active:scale-95 font-normal
+                        ${active === "Popular" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
+                    onClick={() => navigate("/Popular")}
+                >
+                    Popular
+                </li>
                 <li className="text-sm list-none cursor-pointer hover:text-custom-blue-1 custom-transition-duration disable-highlight active:scale-95">My List</li>
             </div>
         </div>

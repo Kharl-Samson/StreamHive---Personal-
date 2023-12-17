@@ -48,19 +48,18 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
 
     // Getting Anime Data List -> First Data - 1st Page
     const { data: dataPage1, isFetched: isFetchedPage1 } = useQuery(
-      [type === "Trending" ? "animeDataTrending1" : type === "recent-episodes" ? "animeDataRecent1" : "noKey1", pageParams],
+      [type === "Trending" ? "animeDataTrending1" : type === "Latest" ? "animeDataRecent1" : type === "Popular" ? "animeDataPopular1" : "noKey1", pageParams],
       () => getAnimeList(fetchCategory, pageParams?.firstParams)
     )
     // Getting Anime Data List -> Second Data - 2nd Page
     const { data: dataPage2, isFetched: isFetchedPage2 } = useQuery(
-      [type === "Trending" ? "animeDataTrending2" : type === "recent-episodes" ? "animeDataRecent2" : "noKey2", pageParams],
+      [type === "Trending" ? "animeDataTrending2" : type === "Latest" ? "animeDataRecent2" : type === "Popular" ? "animeDataPopular2" : "noKey2", pageParams],
       () => getAnimeList(fetchCategory, pageParams?.secondParams)
     )
 
     // Combining the results when both requests have been resolved
     const combinedData = useMemo(() => {
       if (isFetchedPage1 && isFetchedPage2) {
-        console.log(dataPage1?.hasNextPage)
         return {
           results: (dataPage1?.results || []).concat(dataPage2?.results || []),
         }
@@ -84,7 +83,11 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
         <div className={`max-w-[80%] sm:max-w-none w-10/12 mx-auto relative ${spacing}`}>
 
             {/* Headers */}
-            <h1 className="text-custom-gray-4 text-4xl font-semibold text-center lg:text-left pt-10 lg:pt-0">{title}</h1>
+            <h1 className={`text-4xl font-semibold text-center lg:text-left pt-10 lg:pt-0 
+              custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-4 ' : 'text-custom-blue-1'}`}
+            >
+              {title}
+            </h1>
 
             <div className="flex flex-col lg:flex-row justify-between items-center border-b-2 border-custom-blue-1 pb-5 gap-x-10 mt-4 lg:mt-0">
                 <p className="text-base text-custom-gray-1 text-center lg:text-left">{description}</p>
