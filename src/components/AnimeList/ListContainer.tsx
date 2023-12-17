@@ -107,19 +107,22 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
 
             {/* Headers */}
             <h1 className={`text-4xl font-semibold text-center lg:text-left pt-10 lg:pt-0 
-              custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-4 ' : 'text-custom-blue-1'}`}
+              custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-4 ' : 'text-custom-dark-1'}`}
             >
               {title}
             </h1>
 
             <div className="flex flex-col lg:flex-row justify-between items-center border-b-2 border-custom-blue-1 pb-5 gap-x-10 mt-4 lg:mt-0">
-                <p className="text-base text-custom-gray-1 text-center lg:text-left">{description}</p>
+                <p className={`text-base  text-center lg:text-left custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-2'}`}>
+                  {description}
+                </p>
 
                 {
                   hasSeeAll ?
-                  <button className="text-custom-gray-1 border-custom-gray-1 mt-4 lg:mt-[-.50rem] whitespace-nowrap
+                  <button className={`mt-4 lg:mt-[-.50rem] whitespace-nowrap active:scale-95
                     border-2 px-5 py-2 rounded-full disable-highlight custom-transition-duration
-                    hover:border-custom-blue-1 hover:text-custom-blue-1 active:scale-95"
+                    ${isCheckedTheme ? 'hover:border-custom-blue-1 hover:text-custom-blue-1 text-custom-gray-1 border-custom-gray-1' : 
+                    'hover:border-custom-dark-1 hover:text-custom-dark-1 text-custom-blue-1 border-custom-blue-1'}`}
                     onClick={() => navigate(`/${type}`)}
                   >
                       See All &#62;
@@ -129,7 +132,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                     {/* Prev Button */}
                     <button 
                       className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
-                            disable-highlight custom-transition-duration hover:bg-custom-blue-1 
+                            disable-highlight custom-transition-duration md:hover:bg-custom-blue-1 
                             active:scale-95 whitespace-nowrap ${pageParams?.firstParams === 1 && 'opacity-30 pointer-events-none'}`}
                       onClick={prevPage}
                     >
@@ -138,7 +141,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                     {/* Next Button */}
                     <button 
                       className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
-                      disable-highlight custom-transition-duration hover:bg-custom-blue-1 
+                      disable-highlight custom-transition-duration md:hover:bg-custom-blue-1 
                       active:scale-95 whitespace-nowrap ${
                         (!dataPage1 || !dataPage1.hasNextPage) || (!dataPage2 || !dataPage2.hasNextPage) 
                           ? 'opacity-30 pointer-events-none' 

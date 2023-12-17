@@ -16,7 +16,7 @@ export const NavlinksLarge = ({active} : NavlinksLargeProps) => {
         <li 
             className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
                 custom-transition-duration disable-highlight active:scale-95 font-normal
-                ${active === "Home" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
+                ${active === "Home" && isCheckedTheme ? 'text-white font-semibold' : active === "Home" && !isCheckedTheme ? 'font-semibold' : 'font-normal'}`}
             onClick={() => navigate("/")}
         >
             Home
@@ -25,7 +25,7 @@ export const NavlinksLarge = ({active} : NavlinksLargeProps) => {
         <li 
             className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
                 custom-transition-duration disable-highlight active:scale-95 font-normal
-                ${active === "Trending" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
+                ${active === "Trending" && isCheckedTheme ? 'text-white font-semibold' : active === "Trending" && !isCheckedTheme ? 'font-semibold' : 'font-normal'}`}
             onClick={() => navigate("/Trending")}
         >
             Trending
@@ -34,7 +34,7 @@ export const NavlinksLarge = ({active} : NavlinksLargeProps) => {
         <li 
             className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
                 custom-transition-duration disable-highlight active:scale-95 font-normal
-                ${active === "Latest" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
+                ${active === "Latest" && isCheckedTheme ? 'text-white font-semibold' : active === "Latest" && !isCheckedTheme ? 'font-semibold' : 'font-normal'}`}
             onClick={() => navigate("/Latest")}
         >
             Latest
@@ -43,7 +43,7 @@ export const NavlinksLarge = ({active} : NavlinksLargeProps) => {
         <li 
             className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
                 custom-transition-duration disable-highlight active:scale-95 font-normal
-                ${active === "Popular" && isCheckedTheme ? 'text-white font-semibold' : 'font-normal'}`}
+                ${active === "Popular" && isCheckedTheme ? 'text-white font-semibold' : active === "Popular" && !isCheckedTheme ? 'font-semibold' : 'font-normal'}`}
             onClick={() => navigate("/Popular")}
         >
             Popular

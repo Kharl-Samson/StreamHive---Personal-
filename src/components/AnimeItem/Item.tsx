@@ -31,7 +31,7 @@ export const Item = ({id, title, image, genres, episodeNumber, releaseDate} : It
             <LazyLoadImage
               onLoad={() => setImageLoaded(true)}
               wrapperClassName={imageLoaded ? '' : 'blur-up'}
-              className="rounded-2xl w-full h-[20rem] 1220size:h-[17rem] 2xl:h-[20rem] object-cover"
+              className={`rounded-2xl w-full h-[20rem] 1220size:h-[17rem] 2xl:h-[20rem] object-cover ${!isCheckedTheme && 'custom-shadow-button'}`}
               alt="Anime Image"
               src={image}
               onError={(e : any )=>{ e.target.onerror = null; e.target.src= onErrorImage}}

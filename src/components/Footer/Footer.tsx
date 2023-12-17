@@ -8,18 +8,16 @@ export const Footer = () => {
     <footer 
         className={`py-14 custom-transition-duration
         border-t-2 border-custom-blue-1
-        ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-custom-blue-1'}`}
+        ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-custom-dark-2'}`}
     >
         <div className="max-w-[80%] sm:max-w-none w-10/12 mx-auto flex flex-col items-center">
 
             {/* Logo */}
-            <p className={`text-xl 360size:text-3xl custom-font-moonrocks tracking-wide 
-                disable-highlight cursor-pointer active:scale-95 custom-transition-duration 
-                ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}`
-                }
+            <p className="text-xl 360size:text-3xl custom-font-moonrocks tracking-wide text-white
+                disable-highlight cursor-pointer active:scale-95 custom-transition-duration"
             >
                 STREAM
-                <span className={`text-xl 360size:text-3xl custom-transition-duration ${isCheckedTheme ? 'text-custom-blue-1' : 'text-white'}`}>HIVE</span>
+                <span className="text-xl 360size:text-3xl custom-transition-duration text-custom-blue-1">HIVE</span>
             </p>
 
             <p className="text-base text-white text-center mt-3">

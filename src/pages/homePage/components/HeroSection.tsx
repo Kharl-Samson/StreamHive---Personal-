@@ -6,6 +6,7 @@ import bookmark from "../../../assets/icons/bookmark.png"
 import onErrorImage from "../../../assets/onErrorImage.png"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
+import useAppStore from "../../../store/ZustandStore"
 
 type HeroData = {
     title : string
@@ -19,6 +20,9 @@ type HeroData = {
 }
 
 export const HeroSection = () => {
+    // Theme Toggle
+    const {isCheckedTheme} = useAppStore()
+
     // Anime Data from my data folder
     const [dataArray, setDataArray] = useState<HeroData>()
 
@@ -48,8 +52,8 @@ export const HeroSection = () => {
         style={{
             background: `radial-gradient(40.56% 36.62% at 63.93% 48.85%, 
               rgba(149, 149, 149, 0.00) 0%, rgba(0, 0, 0, 0.20) 100%), 
-              linear-gradient(0deg, rgba(7, 13, 17, 0.95) 0%, 
-              rgba(7, 13, 17, 0.95) 100%), 
+              linear-gradient(0deg, ${isCheckedTheme ? 'rgba(7, 13, 17, 0.95)' : 'rgba(255, 255, 255, 0.90)'} 0%, 
+              ${isCheckedTheme ? 'rgba(7, 13, 17, 0.95)' : 'rgba(255, 255, 255, 0.90)'} 100%), 
               url(${dataArray?.backgroundImage}) no-repeat lightgray 70% / cover`
         }}
     >
@@ -64,14 +68,25 @@ export const HeroSection = () => {
             />
 
             <div className="mt-0 lg:mt-4">
-                <p className="text-2xl sm:text-3xl md:text-4xl text-center lg:text-left text-white mt-10 lg:mt-0 custom-font-rocksalt">{dataArray?.title}</p>
-                <p className="text-center lg:text-left text-custom-gray-2 text-base mt-5 max-w-[60rem]">{displayedText}</p>
+                <p className={`text-2xl sm:text-3xl md:text-4xl text-center 
+                    lg:text-left mt-10 lg:mt-0 custom-font-rocksalt custom-transition-duration
+                    ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}`
+                    }
+                >
+                    {dataArray?.title}
+                </p>
+                <p className={`text-center lg:text-left text-base mt-5 max-w-[60rem] custom-transition-duration
+                        ${isCheckedTheme ? 'text-custom-gray-2' : 'text-custom-dark-2'}`
+                    }
+                >
+                    {displayedText}
+                </p>
 
                 {/* Read More Button */}
                 <p onClick={toggleDescription } 
-                    className="mt-5 lg:mt-3 text-custom-gray-3 text-base text-center mx-auto lg:mx-0 lg:text-left 
+                    className={`mt-5 lg:mt-3 text-base text-center mx-auto lg:mx-0 lg:text-left 
                     w-[7.2rem] cursor-pointer custom-transition-duration hover:sm:text-custom-blue-1
-                    hover:sm:underline active:scale-95"
+                    hover:sm:underline active:scale-95 ${isCheckedTheme ? 'text-custom-gray-3' : 'text-custom-dark-2'}`}
                 >
                     {shouldTrim && !showFullDescription && !showSeeLess ? 'Read more 👇' : 'See less ☝️'}
                 </p>
@@ -95,16 +110,35 @@ export const HeroSection = () => {
 
                 {/* Other Details */}
                 <div className="clear-both mt-14 mb-28 lg:mb-0 lg:mt-[9rem] flex flex-wrap justify-center lg:justify-start gap-x-10 gap-y-2">
-                    <p className="text-base text-custom-gray-1">Rating : <span className="text-lg font-medium text-white">{dataArray?.rating}</span></p>
-                    <p className="text-base text-custom-gray-1">Year : <span className="text-lg font-medium text-white">{dataArray?.releaseDate}</span></p>
-                    <p className="text-base text-custom-gray-1">Episodes : <span className="text-lg font-medium text-white">{dataArray?.totalEpisodes}</span></p>
-                    <p className="text-base text-custom-gray-1 text-center lg:text-left">Genres : &nbsp;
-                        {dataArray?.genres && dataArray?.genres.map((genre, index) => (
-                            <span key={index} className="text-lg font-medium text-white">
-                                {genre}
-                                {index !== dataArray?.genres.length - 1 && `, `}
-                            </span>
-                        ))}
+                    <p className={`text-base custom-transition-duration 
+                            ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`
+                        }
+                    >
+                        Rating : <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>{dataArray?.rating}</span>
+                    </p>
+                    <p className={`text-base custom-transition-duration 
+                            ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`
+                        }
+                    >
+                        Year : <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>{dataArray?.releaseDate}</span>
+                    </p>
+                    <p className={`text-base custom-transition-duration 
+                            ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`
+                        }
+                    >
+                        Episodes : <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>{dataArray?.totalEpisodes}</span>
+                    </p>
+                    <p className={`text-base custom-transition-duration 
+                            ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'} text-center lg:text-left`
+                        }
+                    >
+                            Genres : &nbsp;
+                            {dataArray?.genres && dataArray?.genres.map((genre, index) => (
+                                <span key={index} className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
+                                    {genre}
+                                    {index !== dataArray?.genres.length - 1 && `, `}
+                                </span>
+                            ))}
                     </p>
                 </div>
             </div>
