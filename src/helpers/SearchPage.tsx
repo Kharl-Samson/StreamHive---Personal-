@@ -21,6 +21,7 @@ export const SearchPage = () => {
         setAnimeName(inputValue)
         setHasSearch(true)
     }
+    
   return (
     <>
         {/* Navbar */}
@@ -57,6 +58,7 @@ export const SearchPage = () => {
                     </div>
 
                     <div className="mt-3 mx-auto w-full max-w-[40rem] flex gap-3 justify-end">
+                        {/* Go back to page */}
                         <button 
                           className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
                                 disable-highlight custom-transition-duration hover:bg-custom-blue-1 
@@ -65,7 +67,7 @@ export const SearchPage = () => {
                         >
                             &#8592; Go Back
                         </button>
-
+                        {/* Reset search */}
                         <button 
                           className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
                                 disable-highlight custom-transition-duration hover:bg-custom-blue-1 
@@ -80,9 +82,8 @@ export const SearchPage = () => {
             </div>
         </div>
     
-        {
-        !hasSearch ? 
-            /* Trending Now Section */
+        {!hasSearch ? 
+            // Trending Now Section
             <ListContainer 
               fetchCategory = "top-airing"
               type = "Trending"
@@ -91,6 +92,7 @@ export const SearchPage = () => {
               spacing = "lg:pt-10 lg:pb-20"
             />
             :
+            // Seach Results Section
             <ListContainer 
               fetchCategory = {animeName}
               type = "Search"

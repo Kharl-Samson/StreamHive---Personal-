@@ -172,6 +172,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                       image = {res?.image}
                       genres = {res?.genres}
                       episodeNumber = {res?.episodeNumber}
+                      releaseDate = {res?.releaseDate}
                     />
                   ))
                 }

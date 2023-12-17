@@ -9,9 +9,10 @@ type ItemProps = {
     image : string
     genres : string[]
     episodeNumber? : number | string
+    releaseDate? : string
 }
 
-export const Item = ({id, title, image, genres, episodeNumber} : ItemProps ) => {
+export const Item = ({id, title, image, genres, episodeNumber, releaseDate} : ItemProps ) => {
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
 
@@ -48,7 +49,11 @@ export const Item = ({id, title, image, genres, episodeNumber} : ItemProps ) => 
                 {genres ? 
                     genres.map((genre, index) =>  index < 3 && <p key={index} className="text-sm">• {genre}</p>)
                 :
+                episodeNumber ?
                     <p className="text-sm">• {episodeNumber} {episodeNumber === 1 ? 'episode' : 'episodes'}</p>
+                :
+                releaseDate &&
+                    <p className="text-sm">• {releaseDate}</p>
                 }
             </div>
         </div>
