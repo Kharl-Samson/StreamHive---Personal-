@@ -8,31 +8,33 @@ type ItemProps = {
     title : string
     image : string
     genres : string[]
+    episodeNumber? : string
 }
 
-export const Item = ({id, title, image, genres} : ItemProps ) => {
+export const Item = ({id, title, image, genres, episodeNumber} : ItemProps ) => {
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
 
     // Blur Effect in Lazy load
     const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
-    console.log(id)
+    const clickAnime = () => {
+        console.log(id)
+    }
   return (
-    <div className="w-full max-w-[17rem] sm:max-w-none mx-auto sm:mx-0">
+    <div 
+        className={`w-full max-w-[17rem] sm:max-w-none mx-auto sm:mx-0 cursor-pointer hover:${isCheckedTheme ? 'opacity-80' : 'opacity-95'}`}
+        onClick={clickAnime}
+    >
         <div>
             <LazyLoadImage
               onLoad={() => setImageLoaded(true)}
               wrapperClassName={imageLoaded ? '' : 'blur-up'}
-              className="rounded-2xl w-full h-[20rem] object-cover"
+              className="rounded-2xl w-full h-[20rem] 1220size:h-[17rem] 2xl:h-[20rem] object-cover"
               alt="Anime Image"
               src={image}
               onError={(e : any )=>{ e.target.onerror = null; e.target.src= onErrorImage}}
             />
-
-            <p className="text-white text-sm bg-custom-blue-1 absolute px-3 py-1 rounded-full mt-[-19rem] ml-3 disable-highlight">
-                ONGOING
-            </p>
 
             {/* Name */}
             <p className={`text-base font-semibold mt-2 custom-transition-duration text-center 
@@ -40,9 +42,14 @@ export const Item = ({id, title, image, genres} : ItemProps ) => {
             >
                 {title}
             </p>
+
             {/* Sub Details */}
             <div className="mt-1 flex gap-x-2 flex-wrap justify-center sm:justify-start text-custom-gray-1">
-                {genres && genres.map((genre, index) =>  index < 3 && <p key={index} className="text-sm">• {genre}</p>)}
+                {genres ? 
+                    genres.map((genre, index) =>  index < 3 && <p key={index} className="text-sm">• {genre}</p>)
+                :
+                    <p className="text-sm">• {episodeNumber} episodes</p>
+                }
             </div>
         </div>
     </div>

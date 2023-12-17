@@ -14,6 +14,7 @@ export default {
       },
       colors: {
         "custom-dark-1" : "#070c13",
+        "custom-dark-2" : "#141D2B",
         "custom-gray-1" : "#888888",
         "custom-gray-2" : "#DADADA",
         "custom-gray-3" : "#A1A1A1",

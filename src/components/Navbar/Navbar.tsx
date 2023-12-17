@@ -4,6 +4,7 @@ import { ThemeToggle } from "../../widgets/themeToggle/ThemeToggle"
 import { styled } from "@mui/material/styles"
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip"
 import SearchIcon from "@mui/icons-material/Search"
+import { useNavigate } from "react-router-dom"
 
 type NavbarProps = {
     active : string
@@ -24,6 +25,9 @@ export const Navbar = ( { active } : NavbarProps ) => {
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
 
+    // Page Navigator
+    const navigate = useNavigate()
+
   return (
     <nav 
         className={`px-7 lg:px-12 py-5 flex items-center justify-between z-10
@@ -43,15 +47,33 @@ export const Navbar = ( { active } : NavbarProps ) => {
 
             {/* Navlinks */}
             <div className={`hidden lg:flex gap-x-10  ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1 '}`}>
+                {/* Home */}
                 <li 
                     className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
-                        custom-transition-duration disable-highlight active:scale-95
-                        ${active === "Home" && 'text-white font-semibold'}`}
+                        custom-transition-duration disable-highlight active:scale-95 font-normal
+                        ${active === "Home" && isCheckedTheme ? 'text-white font-semibold' : 'font-semibold'}`}
+                    onClick={() => navigate("/")}
                 >
                     Home
                 </li>
-                <li className="text-sm list-none cursor-pointer hover:text-custom-blue-1 custom-transition-duration disable-highlight active:scale-95">Trending</li>
-                <li className="text-sm list-none cursor-pointer hover:text-custom-blue-1 custom-transition-duration disable-highlight active:scale-95">Latest</li>
+                {/* Trending */}
+                <li 
+                    className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
+                        custom-transition-duration disable-highlight active:scale-95 font-normal
+                        ${active === "Trending" && isCheckedTheme ? 'text-white font-semibold' : 'font-semibold'}`}
+                    onClick={() => navigate("/Trending")}
+                >
+                    Trending
+                </li>
+                {/* Latest */}
+                <li 
+                    className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
+                        custom-transition-duration disable-highlight active:scale-95 font-normal
+                        ${active === "Latest" && isCheckedTheme ? 'text-white font-semibold' : 'font-semibold'}`}
+                    onClick={() => navigate("/Latest")}
+                >
+                    Latest
+                </li>
                 <li className="text-sm list-none cursor-pointer hover:text-custom-blue-1 custom-transition-duration disable-highlight active:scale-95">Popular</li>
                 <li className="text-sm list-none cursor-pointer hover:text-custom-blue-1 custom-transition-duration disable-highlight active:scale-95">My List</li>
             </div>
