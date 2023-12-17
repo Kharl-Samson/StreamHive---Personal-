@@ -12,7 +12,7 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
     const {isCheckedTheme} = useAppStore()
 
     // Pagination Controlle
-    const [page, setPage] = useState<{ startPage: number; endPage: number }>({
+    const [page] = useState<{ startPage: number; endPage: number }>({
         startPage: 1,
         endPage: 100,
     })
