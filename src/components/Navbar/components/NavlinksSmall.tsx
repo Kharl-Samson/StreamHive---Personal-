@@ -85,7 +85,7 @@ export const NavlinksSmall = ({anchorEl, open, handleClose} : NavlinksSmallProps
 
         {/* My List */}
         <MenuItem 
-          onClick={() => {handleClose()}}
+          onClick={() => {handleClose() ; navigate("/Search")}}
         >
             <div className={`text-base font-semibold text-custom-dark-2 min-w-[13rem] flex items-center gap-x-3`}>
                 <SearchIcon sx={{fontSize:'25px'}}/>

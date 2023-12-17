@@ -48,12 +48,34 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
 
     // Getting Anime Data List -> First Data - 1st Page
     const { data: dataPage1, isFetched: isFetchedPage1 } = useQuery(
-      [type === "Trending" ? "animeDataTrending1" : type === "Latest" ? "animeDataRecent1" : type === "Popular" ? "animeDataPopular1" : "noKey1", pageParams],
+      [
+        type === "Trending" ? "animeDataTrending1" 
+        : 
+        type === "Latest" ? "animeDataRecent1" 
+        : 
+        type === "Popular" ? "animeDataPopular1" 
+        : 
+        type === "Search" ? "animeDataSearch1" 
+        : 
+        "noKey1", 
+        pageParams, fetchCategory, type
+      ],
       () => getAnimeList(fetchCategory, pageParams?.firstParams)
     )
     // Getting Anime Data List -> Second Data - 2nd Page
     const { data: dataPage2, isFetched: isFetchedPage2 } = useQuery(
-      [type === "Trending" ? "animeDataTrending2" : type === "Latest" ? "animeDataRecent2" : type === "Popular" ? "animeDataPopular2" : "noKey2", pageParams],
+      [
+        type === "Trending" ? "animeDataTrending2" 
+        : 
+        type === "Latest" ? "animeDataRecent2" 
+        : 
+        type === "Popular" ? "animeDataPopular2" 
+        : 
+        type === "Search" ? "animeDataSearch2" 
+        : 
+        "noKey2", 
+        pageParams, fetchCategory, type
+      ],
       () => getAnimeList(fetchCategory, pageParams?.secondParams)
     )
 
@@ -70,6 +92,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
     // Setting timeout for skeleton
     const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
+      setIsLoading(true)
       if(isFetchedPage1 && isFetchedPage2){
         const timer = setTimeout(() => {
           setIsLoading(false)
@@ -79,7 +102,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
     }, [isFetchedPage1, isFetchedPage2, pageParams])
            
   return (
-    <section className={`w-full custom-transition-duration pb-20 lg:pb-0 ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}>
+    <section className={`min-h-[50rem] w-full custom-transition-duration pb-20 lg:pb-0 ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}>
         <div className={`max-w-[80%] sm:max-w-none w-10/12 mx-auto relative ${spacing}`}>
 
             {/* Headers */}
@@ -115,8 +138,12 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                     {/* Next Button */}
                     <button 
                       className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
-                          disable-highlight custom-transition-duration hover:bg-custom-blue-1 
-                          active:scale-95 whitespace-nowrap ${!dataPage1?.hasNextPage || !dataPage2?.hasNextPage  && 'opacity-30 pointer-events-none'}`}
+                      disable-highlight custom-transition-duration hover:bg-custom-blue-1 
+                      active:scale-95 whitespace-nowrap ${
+                        (!dataPage1 || !dataPage1.hasNextPage) || (!dataPage2 || !dataPage2.hasNextPage) 
+                          ? 'opacity-30 pointer-events-none' 
+                          : ''
+                      }`}
                       onClick={nextPage}
                     >
                       Next &#8594;
@@ -132,6 +159,11 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                   isLoading ? 
                     <SkeletonLoading size = {18}/>
                   :
+                  combinedData?.results.length === 0 ?
+                    <div className="w-full absolute">
+                      <p className={`text-base ${isCheckedTheme ? 'text-custom-gray-4 ' : 'text-custom-dark-2'}`}>No data found for "{fetchCategory}".</p>
+                    </div>
+                  :
                   combinedData?.results?.map((res: any) => (
                     <Item
                       key = {res?.id}
@@ -144,6 +176,34 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                   ))
                 }
             </div>
+            
+            {/* Button below if has see all is not true */
+            !hasSeeAll &&
+              <div className="flex flex-wrap justify-center md:justify-end gap-3 mt-10">
+                {/* Prev Button */}
+                <button 
+                  className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
+                        disable-highlight custom-transition-duration hover:bg-custom-dark-2 
+                        active:scale-95 whitespace-nowrap ${pageParams?.firstParams === 1 && 'opacity-30 pointer-events-none'}`}
+                  onClick={prevPage}
+                >
+                  &#8592; Prev
+                </button>
+                {/* Next Button */}
+                <button 
+                  className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
+                      disable-highlight custom-transition-duration hover:bg-custom-dark-2 
+                      active:scale-95 whitespace-nowrap ${
+                        (!dataPage1 || !dataPage1.hasNextPage) || (!dataPage2 || !dataPage2.hasNextPage) 
+                          ? 'opacity-30 pointer-events-none' 
+                          : ''
+                      }`}
+                  onClick={nextPage}
+                >
+                  Next &#8594;
+                </button>
+              </div>
+            }
         </div>
     </section>
   )

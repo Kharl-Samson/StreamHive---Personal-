@@ -8,7 +8,7 @@ type ItemProps = {
     title : string
     image : string
     genres : string[]
-    episodeNumber? : string
+    episodeNumber? : number | string
 }
 
 export const Item = ({id, title, image, genres, episodeNumber} : ItemProps ) => {
@@ -48,7 +48,7 @@ export const Item = ({id, title, image, genres, episodeNumber} : ItemProps ) => 
                 {genres ? 
                     genres.map((genre, index) =>  index < 3 && <p key={index} className="text-sm">• {genre}</p>)
                 :
-                    <p className="text-sm">• {episodeNumber} episodes</p>
+                    <p className="text-sm">• {episodeNumber} {episodeNumber === 1 ? 'episode' : 'episodes'}</p>
                 }
             </div>
         </div>

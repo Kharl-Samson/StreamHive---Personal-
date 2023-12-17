@@ -5,9 +5,10 @@ import { styled } from "@mui/material/styles"
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip"
 import SearchIcon from "@mui/icons-material/Search"
 import { NavlinksLarge } from "./components/NavlinksLarge"
+import { useNavigate } from "react-router-dom"
 
 type NavbarProps = {
-    active : string
+    active? : string
 }
 
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -24,6 +25,8 @@ const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
 export const Navbar = ( { active } : NavbarProps ) => {
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
+    // Page Navigator
+    const navigate = useNavigate()
 
   return (
     <nav 
@@ -53,6 +56,7 @@ export const Navbar = ( { active } : NavbarProps ) => {
                     sx={{fontSize:'30px'}}
                     className={`cursor-pointer hover:opacity-80 active:scale-y-95 disable-highlight 
                     scale-x-[-1] ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1 '}`}
+                    onClick = {() => navigate("/Search")}
                 />
             </LightTooltip>
             <ThemeToggle/>
