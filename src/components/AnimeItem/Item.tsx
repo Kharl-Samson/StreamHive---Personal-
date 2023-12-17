@@ -2,6 +2,7 @@ import useAppStore from "../../store/ZustandStore"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import onErrorImage from "../../assets/onErrorImage.png"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 type ItemProps = {
     id : string
@@ -16,16 +17,16 @@ export const Item = ({id, title, image, genres, episodeNumber, releaseDate} : It
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
 
+    // Page Navigator
+    const navigate = useNavigate()
+
     // Blur Effect in Lazy load
     const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
-    const clickAnime = () => {
-        console.log(id)
-    }
   return (
     <div 
         className={`w-full max-w-[17rem] sm:max-w-none mx-auto sm:mx-0 cursor-pointer hover:${isCheckedTheme ? 'opacity-80' : 'opacity-95'}`}
-        onClick={clickAnime}
+        onClick={() => navigate(`/Anime/${id}`)}
     >
         <div>
             <LazyLoadImage

@@ -7,8 +7,10 @@ import onErrorImage from "../../../assets/onErrorImage.png"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
 import useAppStore from "../../../store/ZustandStore"
+import { useNavigate } from "react-router-dom"
 
 type HeroData = {
+    id : string,
     title : string
     description : string
     backgroundImage : string
@@ -22,6 +24,9 @@ type HeroData = {
 export const HeroSection = () => {
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
+
+    // Page Navigator
+    const navigate = useNavigate()
 
     // Anime Data from my data folder
     const [dataArray, setDataArray] = useState<HeroData>()
@@ -98,6 +103,7 @@ export const HeroSection = () => {
                         bgColor = "bg-custom-blue-1"
                         shadeColor = "bg-[#0B3D85]"
                         icon = {playIcon}
+                        onClick = {()=> navigate(`Anime/${dataArray?.id}`)}
                     />
 
                     <Button
@@ -132,13 +138,13 @@ export const HeroSection = () => {
                             ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'} text-center lg:text-left`
                         }
                     >
-                            Genres : &nbsp;
-                            {dataArray?.genres && dataArray?.genres.map((genre, index) => (
-                                <span key={index} className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
-                                    {genre}
-                                    {index !== dataArray?.genres.length - 1 && `, `}
-                                </span>
-                            ))}
+                        Genres : &nbsp;
+                        {dataArray?.genres && dataArray?.genres.map((genre, index) => (
+                            <span key={index} className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
+                                {genre}
+                                {index !== dataArray?.genres.length - 1 && `, `}
+                            </span>
+                        ))}
                     </p>
                 </div>
             </div>

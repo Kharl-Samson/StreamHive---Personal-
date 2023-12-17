@@ -15,3 +15,16 @@ export const getAnimeList = async (category : string, page?: number) => {
     throw new Error(error.response?.data)
   }
 }
+
+export const getAnime = async (id : string) => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/anime/gogoanime/info/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return response.data
+  } catch (error : any) {
+    throw new Error(error.response?.data)
+  }
+}

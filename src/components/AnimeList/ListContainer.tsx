@@ -144,8 +144,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                       disable-highlight custom-transition-duration md:hover:bg-custom-blue-1 
                       active:scale-95 whitespace-nowrap ${
                         (!dataPage1 || !dataPage1.hasNextPage) || (!dataPage2 || !dataPage2.hasNextPage) 
-                          ? 'opacity-30 pointer-events-none' 
-                          : ''
+                          ? 'opacity-30 pointer-events-none' : ''
                       }`}
                       onClick={nextPage}
                     >
@@ -199,8 +198,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                       disable-highlight custom-transition-duration hover:bg-custom-dark-2 
                       active:scale-95 whitespace-nowrap ${
                         (!dataPage1 || !dataPage1.hasNextPage) || (!dataPage2 || !dataPage2.hasNextPage) 
-                          ? 'opacity-30 pointer-events-none' 
-                          : ''
+                          ? 'opacity-30 pointer-events-none' : ''
                       }`}
                   onClick={nextPage}
                 >
