@@ -42,7 +42,7 @@ export const SearchPage = () => {
                                   </svg>
                                 </div>
                                 <input 
-                                    autoFocus
+                                    // autoFocus
                                     type="text" 
                                     className="w-full bg-white pl-2 text-base outline-0"
                                     value={inputValue}
