@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 import "./ThemeToggle.css"
 
 export const ThemeToggle = () => {

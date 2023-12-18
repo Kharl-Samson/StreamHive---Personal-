@@ -6,7 +6,7 @@ import bookmark from "../../../assets/icons/bookmark.png"
 import onErrorImage from "../../../assets/onErrorImage.png"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
-import useAppStore from "../../../store/ZustandStore"
+import { useAppStore } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 
 type HeroData = {

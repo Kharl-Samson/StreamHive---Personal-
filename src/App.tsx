@@ -5,7 +5,7 @@ import { Latest } from "./pages/latestPage/Latest"
 import { Popular } from "./pages/popularPage/Popular"
 import { SearchPage } from "./helpers/SearchPage"
 import { Selected } from "./pages/SelectedPage/Selected"
-import useAppStore from "./store/ZustandStore"
+import { useAppStore } from "./store/ZustandStore"
 
 function App() {
     // Theme Toggle

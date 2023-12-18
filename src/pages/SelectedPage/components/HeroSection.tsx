@@ -5,7 +5,7 @@ import bookmark from "../../../assets/icons/bookmark.png"
 import onErrorImage from "../../../assets/onErrorImage.png"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
-import useAppStore from "../../../store/ZustandStore"
+import { useAppStore } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -161,7 +161,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                     </p>
 
                     {/* Read More Button */
-                    displayedText.length >= 420 &&
+                    displayedText && displayedText.length && displayedText.length >= 420 &&
                         <p onClick={toggleDescription } 
                             className={`mt-5 lg:mt-3 text-base text-center mx-auto lg:mx-0 lg:text-left 
                             w-[7.2rem] cursor-pointer custom-transition-duration hover:sm:text-custom-blue-1

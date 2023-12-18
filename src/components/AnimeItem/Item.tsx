@@ -1,4 +1,4 @@
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import onErrorImage from "../../assets/onErrorImage.png"
 import { useState } from "react"

@@ -1,4 +1,4 @@
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 import { HamburgerMenu } from "../../widgets/hamburgerMenu/HamburgerMenu"
 import { ThemeToggle } from "../../widgets/themeToggle/ThemeToggle"
 import { styled } from "@mui/material/styles"
@@ -40,6 +40,7 @@ export const Navbar = ( { active } : NavbarProps ) => {
                 disable-highlight cursor-pointer active:scale-95 custom-transition-duration 
                 ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}`
                }
+               onClick={() => navigate("/")}
             >
                 STREAM
                 <span className="text-xl 360size:text-2xl text-custom-blue-1">HIVE</span>

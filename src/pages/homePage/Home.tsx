@@ -1,7 +1,7 @@
 import { ListContainer } from "../../components/AnimeList/ListContainer"
 import { Footer } from "../../components/Footer/Footer"
 import { Navbar } from "../../components/Navbar/Navbar"
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 import { HeroSection } from "./components/HeroSection"
 
 export const Home = () => {

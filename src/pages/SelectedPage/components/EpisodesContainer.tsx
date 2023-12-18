@@ -1,6 +1,7 @@
-import useAppStore from '@/store/ZustandStore'
-import { useState } from 'react'
+
+import { useEffect, useState } from 'react'
 import { Skeleton } from "@/components/ui/skeleton"
+import { useAppStore, useWebStatePersist } from '@/store/ZustandStore'
 
 type EpisodesContainerProps = {
     animeData : any
@@ -12,13 +13,86 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
     const {isCheckedTheme} = useAppStore()
 
     // Pagination Controlle
-    const [page] = useState<{ startPage: number; endPage: number }>({
+    const [page, setPage] = useState<{ startPage: number; endPage: number }>({
         startPage: 1,
         endPage: 100,
     })
 
+    // Range Dropdown
+    const [ranges, setRanges] = useState<string[]>([])
+    const [selectedRange, setSelectedRange] = useState('')
+
+    // Load available data in dropdown
+    useEffect(() => {
+      generateRanges()
+    }, [animeData?.totalEpisodes])
+    
+    const generateRanges = () => {
+      const numRanges = Math.ceil(animeData?.totalEpisodes / 100)
+      const newRanges = Array.from({ length: numRanges }, (_, index) => {
+        const start = index * 100 + 1;
+        const end = Math.min((index + 1) * 100, animeData?.totalEpisodes)
+        return `${start}-${end}`
+      })
+      setRanges(newRanges)
+    }
+
+    // Onchange event in dropdown
+    const handleRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedValue = event.target.value
+      setSelectedRange(event.target.value)
+
+      if (selectedValue !== '') {
+        const [startStr, endStr] = selectedValue.split('-')
+        const start = parseInt(startStr, 10)
+        const end = parseInt(endStr, 10)
+        setPage((prevPage) => ({
+          ...prevPage,
+          startPage: start,
+          endPage: end
+        }))
+      } 
+      else {
+        setPage((prevPage) => ({
+          ...prevPage,
+          startPage: 1,
+          endPage: 100
+        }))
+      }
+    }
+
+    // Anime Storage Data
+    const { animeDetails, setAnimeDetails } = useWebStatePersist();
+
+    // Trigger when click the episode
+    const saveData = (animeId: string, watchedEpisode: number) => {
+      let isUpdated = false
+      const updatedData = animeDetails.map(item => {
+        if (item.animeId === animeId) {
+          isUpdated = true;
+          return {
+            ...item,
+            watchedEpisode: [...item.watchedEpisode, watchedEpisode]
+          }
+        }
+        return item
+      })
+    
+      if (!isUpdated) {
+        setAnimeDetails([
+          ...animeDetails,
+          {
+            animeId: animeId,
+            watchedEpisode: [watchedEpisode]
+          }
+        ])
+      } else {
+        setAnimeDetails(updatedData)
+      }
+    }
+
   return (
-    <section className={`min-h-[40rem] w-full custom-transition-duration pb-20 ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}>
+    <section className={`min-h-[14rem] w-full custom-transition-duration pb-10 lg:pb-14 ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}>
         <div className={`max-w-[80%] sm:max-w-none w-10/12 mx-auto mt-16`}>
             {/* Headers */}
             <h1 className={`text-4xl font-semibold text-center lg:text-left pt-0
@@ -32,14 +106,20 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
                     Unwind and savor the pleasure of watching your favorite shows for a relaxing and enjoyable experience.
                 </p>
 
-                  {/* <button className={`mt-4 lg:mt-[-.50rem] whitespace-nowrap active:scale-95
-                    border-2 px-5 py-2 rounded-full disable-highlight custom-transition-duration
-                    ${isCheckedTheme ? 'hover:border-custom-blue-1 hover:text-custom-blue-1 text-custom-gray-1 border-custom-gray-1' : 
-                    'hover:border-custom-dark-1 hover:text-custom-dark-1 text-custom-blue-1 border-custom-blue-1'}`}
-                    onClick={() => navigate(`/${type}`)}
-                  >
-                      See All &#62;
-                  </button> */}
+                {/* Filter Page */
+                  animeData?.totalEpisodes && animeData?.totalEpisodes >= 100 &&
+                    <select 
+                      value={selectedRange} 
+                      onChange={handleRangeChange} 
+                      className="text-white bg-custom-dark-2 px-5 py-2 rounded-md disable-highlight cursor-pointer whitespace-nowrap mt-4 lg:mt-[-.50rem] outline-none"
+                    >
+                      {ranges.map((range, index) => (
+                        <option key={index} value={range}>
+                          {range}
+                        </option>
+                      ))}
+                    </select>
+                }
             </div>
         </div>
 
@@ -60,6 +140,7 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
                           className="bg-[#122532] rounded text-sm text-white py-2 flex justify-center 
                             disable-highlight cursor-pointer hover:opacity-90 active:scale-95"
                           key={res?.id}
+                          onClick={() => saveData(animeData?.id, res?.number)}
                         >
                           EP {res?.number} &nbsp;<span className='text-sm text-custom-gray-1 uppercase'>| {animeData?.subOrDub}</span>
                         </div>

@@ -1,4 +1,4 @@
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 import { useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 import { Item } from "../AnimeItem/Item"

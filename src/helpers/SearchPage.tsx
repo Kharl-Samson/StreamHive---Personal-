@@ -2,7 +2,7 @@ import { useState } from "react"
 import { ListContainer } from "../components/AnimeList/ListContainer"
 import { Footer } from "../components/Footer/Footer"
 import { Navbar } from "../components/Navbar/Navbar"
-import useAppStore from "../store/ZustandStore"
+import { useAppStore } from "../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 
 export const SearchPage = () => {
@@ -42,7 +42,7 @@ export const SearchPage = () => {
                                   </svg>
                                 </div>
                                 <input 
-                                    // autoFocus
+                                    autoFocus
                                     type="text" 
                                     className="w-full bg-white pl-2 text-base outline-0"
                                     value={inputValue}

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { NavlinksSmall } from "../../components/Navbar/components/NavlinksSmall"
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 import "./HamburgerMenu.css"
 
 export const HamburgerMenu = () => {

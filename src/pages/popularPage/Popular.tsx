@@ -9,7 +9,7 @@ export const Popular = () => {
         {/* Navbar */}
         <Navbar active = "Popular"/>
 
-        {/* Trending Now Section */}
+        {/* Popular Now Section */}
         <ListContainer 
           fetchCategory = "popular"
           type = "Popular"

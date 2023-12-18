@@ -1,5 +1,5 @@
 import Skeleton from "@mui/material/Skeleton"
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 
 type SkeletonLoadingProps = {
     size : number

@@ -1,4 +1,4 @@
-import useAppStore from "../../store/ZustandStore"
+import { useAppStore } from "../../store/ZustandStore"
 
 export const Footer = () => {
   // Theme Toggle

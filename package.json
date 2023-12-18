@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.15.0",
     "@mui/styled-engine-sc": "^6.0.0-alpha.8",
+    "@radix-ui/react-select": "^2.0.0",
     "axios": "^1.6.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -27,7 +28,8 @@
     "styled-components": "^6.1.1",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
-    "zustand": "^4.4.7"
+    "zustand": "^4.4.7",
+    "zustand-persist": "^0.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",

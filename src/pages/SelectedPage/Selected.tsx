@@ -6,6 +6,7 @@ import { useQuery } from "react-query"
 import { getAnime } from "@/services/apiFetchAnimeList"
 import { useEffect, useState } from "react"
 import { EpisodesContainer } from "./components/EpisodesContainer"
+import { ListContainer } from "@/components/AnimeList/ListContainer"
 
 export const Selected = () => {
     // Params ID
@@ -60,6 +61,16 @@ export const Selected = () => {
         <EpisodesContainer
             animeData = {animeData} 
             isLoading = {isLoading}
+        />
+
+        {/* Popular Now Section */}
+        <ListContainer 
+          fetchCategory = "popular"
+          type = "Popular"
+          title = "Popular Now"
+          description = "Stay updated and connected with the latest trends by immersing in the most popular shows available!"
+          spacing = "lg:pt-10 lg:pb-20"
+          hasSeeAll
         />
 
         {/* Footer Section */}
