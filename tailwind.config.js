@@ -9,11 +9,14 @@ export default {
       screens: {
         "360size": "360px",
         "400size": "400px",
+        "580size": "580px",
         "600size": "600px",
         "700size": "700px",
         "800size": "800px",
         "870size": "870px",
         "900size": "900px",
+        "1000size": "1000px",
+        "1100size": "1100px",
         "1220size" : "1220px",
         "1700size" : "1700px",
         "1920size" : "1920px"
