@@ -118,7 +118,7 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
 
                 {/* Last Watched */}
                 <div className="flex items-center gap-x-2">
-                  <div className="h-[20px] w-[20px] bg-[white] rounded-sm"></div>
+                  <div className="h-[20px] w-[20px] bg-[#cac9c9] rounded-sm"></div>
                   <p className={`text-sm custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-2'}`}>- Last watched</p>
                 </div>
               </div>
@@ -146,7 +146,7 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
                         className={`rounded text-xs 400size:text-sm py-2 flex justify-center 
                           disable-highlight cursor-pointer hover:opacity-90 active:scale-95
                           ${(isWatched && lastWatched !== res?.number) ? 'bg-[#0063F2] text-white' : 
-                          lastWatched === res?.number ? 'bg-[white] text-custom-dark-1 font-medium' : 
+                          lastWatched === res?.number ? 'bg-[#cac9c9] text-custom-dark-1 font-medium' : 
                           'bg-[#122532] text-custom-gray-1'}
                           `}
                         key={res?.id}

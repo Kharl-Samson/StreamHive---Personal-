@@ -9,9 +9,11 @@ type HeroSectionProps = {
     episodeData : any
     fakeRating : number | undefined
     isLoading : boolean
+    dataId? : string
+    myEpisodeId : string
 }
 
-export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } : HeroSectionProps) => {
+export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, dataId, myEpisodeId } : HeroSectionProps) => {
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
 
@@ -36,14 +38,40 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
     // Player Controller
     const [frameUrl, setFrameUrl] = useState<string>("")
     const [urlValue, setUrlValue] = useState<string>("")
+    const [serverName, setServerName] = useState<string>("")
+
+    // Trigger When Page Loads
     useEffect(() => {
-        if(urlValue === "" && episodeData){
-            setFrameUrl(episodeData[0]?.url)
+        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
+        const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
+        if (filelionsUrl) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
+        } 
+        else if (streamwishUrl) {
+            setServerName("Streamwish")
+            setFrameUrl(streamwishUrl?.url || '')
+        } 
+    }, [episodeData])
+
+    // Trigger Every Time this data changed -> episodeData, urlValue, isLoading, serverName
+    useEffect(() => {
+        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
+        const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
+
+        if (filelionsUrl?.name === serverName) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
+        } 
+        else if (streamwishUrl?.name === serverName) {
+            setServerName("Streamwish")
+            setFrameUrl(streamwishUrl?.url || '')
+        } 
+        else {
+            setFrameUrl(episodeData && episodeData[0]?.url)
         }
-        else{
-            setFrameUrl(urlValue)
-        }
-    },[episodeData, urlValue, isLoading])
+    },[episodeData, urlValue, isLoading, serverName])
+
 
     // Loading Skeleton
     const [loader, setLoader] = useState<boolean>(true)
@@ -51,11 +79,12 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
         if(isLoading || loader){
             const timer = setTimeout(() => {
                 setLoader(false)
-            }, 500)
+            }, 1000)
             return () => clearTimeout(timer)
         }
     },[loader, isLoading])
 
+    // To Full Screen Iframe
     const handleFullscreen = () => {
         if (iframeRef.current) {
           const iframe = iframeRef.current
@@ -71,6 +100,24 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
           }
         }
     }
+
+    // Get User's Operating System
+    const operatingSystem = navigator.platform // Get the user"s operating system
+
+    // Pagination Controlle
+    const inputString : string = myEpisodeId
+    const arrayFromString : any = inputString.split("-")
+    const currentEpisode : any = arrayFromString[arrayFromString?.length - 1]
+
+    // Trigger Next Page
+    const nextPage = () => {
+        navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) + 1}`)
+    }
+    // Trigger Prev Page
+    const prevPage = () => {
+        navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) - 1}`)
+    }
+  
 
   return (
     <div 
@@ -94,51 +141,64 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
             </p>
 
             <div className="flex flex-wrap sm:justify-between gap-3 w-[100%] xl:max-w-[45rem] clear-both">
-                {/* Allow Fulls Screen */}
-                <button 
-                    onClick={handleFullscreen}
-                    className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
-                        disable-highlight custom-transition-duration hover:bg-custom-dark-1 
-                        active:scale-95 whitespace-nowrap`}
-                    // onClick={prevPage}
-                >
-                  Allow Fullscreen
-                </button>
+                {/* Allow Fulls Screen */
+                operatingSystem.includes("Win") &&
+                    <button 
+                        onClick={handleFullscreen}
+                        className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
+                            disable-highlight custom-transition-duration hover:bg-custom-dark-1 
+                            active:scale-95 whitespace-nowrap`}
+                    >
+                      Allow Fullscreen
+                    </button>
+                }
                 
                 <div className="flex flex-wrap sm:justify-end gap-3">
-                    {/* Prev Button */}
-                    <button 
-                        className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
-                            disable-highlight custom-transition-duration hover:bg-custom-dark-2 
-                            active:scale-95 whitespace-nowrap`}
-                        // onClick={prevPage}
-                    >
-                      &#8592; Prev Episode
-                    </button>
-                    {/* Next Button */}
-                    <button 
-                      className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
-                          disable-highlight custom-transition-duration hover:bg-custom-dark-2 
-                          active:scale-95 whitespace-nowrap`}
-                        // onClick={nextPage}
-                    >
-                      Next Episode &#8594;
-                    </button>
+                    {/* Prev Button */
+                    parseInt(currentEpisode) !== 1 &&
+                        <button 
+                            className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
+                                disable-highlight custom-transition-duration hover:bg-custom-dark-2 
+                                active:scale-95 whitespace-nowrap`}
+                            onClick={prevPage}
+                        >
+                          &#8592; Prev Episode
+                        </button>
+                    }
+                    
+                    {/* Next Button */
+                    animeData?.totalEpisodes !== parseInt(currentEpisode) &&
+                        <button 
+                          className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
+                              disable-highlight custom-transition-duration hover:bg-custom-dark-2 
+                              active:scale-95 whitespace-nowrap`}
+                            onClick={nextPage}
+                        >
+                          Next Episode &#8594;
+                        </button>
+                    }
                 </div>
             </div>
         </div>
         
         <div className="max-w-[80%] sm:max-w-none w-10/12 mx-auto xl:flex gap-x-20">
-            {isLoading || loader ? 
-                <Skeleton className="w-[100%] xl:max-w-[45rem]
-                            h-auto min-h-[16.5rem] 580size:min-h-[17rem]
-                            600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
-                            900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
-                            1220size:min-h-[38rem] xl:min-h-0
-                            mx-auto xl:mx-0 object-cover rounded-3xl"/>
-                :
-                episodeData &&<Player dataUrl = {frameUrl} iframeRef = {iframeRef}/>
-            }
+                {/* Skeleton for Video Player */}
+                <Skeleton 
+                    className={`w-[100%] xl:max-w-[45rem]
+                        h-auto min-h-[16.5rem] 580size:min-h-[17rem]
+                        600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
+                        900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
+                        1220size:min-h-[38rem] xl:min-h-0
+                        mx-auto xl:mx-0 object-cover rounded-3xl ${isLoading || loader ? 'block' : 'hidden'}`}
+                />
+
+                {/* Video Player */}
+                <Player 
+                   dataUrl = {frameUrl} 
+                   serverName = {serverName}
+                   iframeRef = {iframeRef} 
+                   frameStyle = {isLoading || loader ? 'hidden' : 'block'}
+                />
 
             {isLoading ?
                 <div className="w-full">
@@ -205,8 +265,10 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
                             <div className="flex flex-wrap mt-4 gap-5">
                                 {episodeData && episodeData.map((res : any, index : number) => (
                                     <div key={index} className={`rounded text-xs 400size:text-sm py-2 px-5 flex justify-center disable-highlight 
-                                        cursor-pointer hover:opacity-90 active:scale-95 bg-[#141D2B] text-white`}
-                                        onClick={() => { setUrlValue(res?.url) ; setLoader(!loader) }}
+                                        cursor-pointer hover:opacity-90 active:scale-95 text-white
+                                        ${serverName === res?.name ? 'bg-custom-blue-1' : 'bg-[#141D2B]'}
+                                        `}
+                                        onClick={() => { setServerName(res?.name); setUrlValue(res?.url) ; setLoader(!loader) }}
                                     >
                                         {res?.name}
                                     </div>

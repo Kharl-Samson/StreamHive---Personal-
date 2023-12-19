@@ -65,6 +65,8 @@ export const Watch = () => {
             episodeData = {episodeData}
             fakeRating = {fakeRating}
             isLoading = {isLoading}
+            dataId = {dataId}
+            myEpisodeId = {myEpisodeId}
         />
 
 

@@ -3,12 +3,12 @@ import demonSlayer from "../assets/backgrounds/demonSlayer.png"
 
 export default [
     {
-        id : 'Naruto',
+        id : 'naruto-shippuden',
         title : 'Naruto Shippuden',
         description : 'Naruto Shippuden is a continuation of original series Naruto. After 2 and a half years of training with his master, Naruto finally returns to his village of Konoha. Naruto is now older and more mature than before. With his new trained ability, his goal of searching for long lost friend, Uchiha Sasuke, is set for a stronger determination than before.\n\nNaruto Shippuden is a continuation of original series Naruto. After 2 and a half years of training with his master, Naruto finally returns to his village of Konoha. Naruto is now older and more mature than before. With his new trained ability, his goal of searching for long lost friend, Uchiha Sasuke, is set for a stronger determination than before.\nHe is putting his ambitions to work along with the help of his many friends, though with so many obstacles ahead of him. Now, he will face even more dangerous enemies, especially the Akatsuki.',
         backgroundImage : narutoBG,
         image : 'https://gogocdn.net/images/anime/naruto_shippuden.jpg',
-        rating : 8.7,
+        rating : 8.9,
         releaseDate : 2007,
         totalEpisodes: 500,
         genres: ["Action", "Comedy", "Martial Arts", "Shounen", "Super Power"]
