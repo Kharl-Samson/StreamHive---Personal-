@@ -28,3 +28,16 @@ export const getAnime = async (id : string) => {
     throw new Error(error.response?.data)
   }
 }
+
+export const getAnimeEpisode = async (episodeId : string) => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/anime/gogoanime/servers/${episodeId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return response.data
+  } catch (error : any) {
+    throw new Error(error.response?.data)
+  }
+}

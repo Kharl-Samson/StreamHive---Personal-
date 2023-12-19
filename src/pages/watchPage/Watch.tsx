@@ -1,22 +1,30 @@
 import { useParams } from "react-router-dom"
 import { Footer } from "../../components/Footer/Footer"
 import { Navbar } from "../../components/Navbar/Navbar"
-import { HeroSection } from "./components/HeroSection"
 import { useQuery } from "react-query"
-import { getAnime } from "@/services/apiFetchAnimeList"
+import { getAnime, getAnimeEpisode } from "@/services/apiFetchAnimeList"
 import { useEffect, useState } from "react"
-import { EpisodesContainer } from "../../components/EpisodesList/EpisodesContainer"
-import { ListContainer } from "@/components/AnimeList/ListContainer"
 
-export const Selected = () => {
+import { ListContainer } from "@/components/AnimeList/ListContainer"
+import { EpisodesContainer } from "@/components/EpisodesList/EpisodesContainer"
+import { HeroSection } from "./components/HeroSection"
+
+export const Watch = () => {
     // Params ID
-    const { dataId } = useParams()
-    const id = dataId || ""
-    
+    const { dataId, episodeId} = useParams()
+    const myDataId = dataId || ""
+    const myEpisodeId = episodeId || ""
+
     // Getting Anime Data  
     const { data: animeData, isFetched: isAnimeDataFetch } = useQuery(
-        ["animeDataKey", id],
-        () => getAnime(id)
+        ["animeDataKey", myDataId, myEpisodeId],
+        () => getAnime(myDataId)
+    )
+
+    // Gettin Current Episode Stream URL
+    const { data: episodeData, isFetched: isEpisodeFetch } = useQuery(
+        ["episodeDataKey", myDataId, myEpisodeId],
+        () => getAnimeEpisode(myEpisodeId)
     )
     
     // Getting Random Rating
@@ -37,7 +45,7 @@ export const Selected = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
         setIsLoading(true)
-        if(isAnimeDataFetch){
+        if(isAnimeDataFetch && isEpisodeFetch){
           const timer = setTimeout(() => {
             setIsLoading(false)
           }, 500)
@@ -53,9 +61,11 @@ export const Selected = () => {
         {/* Hero Section */}
         <HeroSection 
             animeData = {animeData} 
+            episodeData = {episodeData}
             fakeRating = {fakeRating}
             isLoading = {isLoading}
         />
+
 
         {/* Episodes Container */}
         <EpisodesContainer
@@ -65,10 +75,10 @@ export const Selected = () => {
 
         {/* Popular Now Section */}
         <ListContainer 
-          fetchCategory = "popular"
-          type = "Popular"
-          title = "Popular Now"
-          description = "Stay updated and connected with the latest trends by immersing in the most popular shows available!"
+          fetchCategory = "recent-episodes"
+          type = "Latest"
+          title = "Latest Release"
+          description = "Keep yourself informed and in the loop with the most recent releases!"
           spacing = "lg:pt-10 lg:pb-20"
           hasSeeAll
         />

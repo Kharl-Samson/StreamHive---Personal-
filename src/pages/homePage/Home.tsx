@@ -32,7 +32,7 @@ export const Home = () => {
           hasSeeAll
         />
 
-        {/* Popular Section */}
+        {/* Latest Section */}
         <ListContainer 
           fetchCategory = "recent-episodes"
           type = "Latest"

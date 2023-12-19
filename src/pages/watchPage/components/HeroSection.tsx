@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "../../../widgets/button/Button"
 import playIcon from "../../../assets/icons/play.png"
 import bookmark from "../../../assets/icons/bookmark.png"
-import onErrorImage from "../../../assets/onErrorImage.png"
-import { LazyLoadImage } from "react-lazy-load-image-component"
-import "react-lazy-load-image-component/src/effects/blur.css"
 import { useAppStore, useWebStatePersist } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -12,11 +9,12 @@ import { saveData } from "@/utils/saveData"
 
 type HeroSectionProps = {
     animeData : any
+    episodeData : any
     fakeRating : number | undefined
     isLoading : boolean
 }
 
-export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionProps) => {
+export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } : HeroSectionProps) => {
     // Theme Toggle
     const {isCheckedTheme} = useAppStore()
 
@@ -35,8 +33,6 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
     const shouldTrim = animeData?.description?.length  && animeData?.description?.length > maxLength && !showFullDescription
     const displayedText = shouldTrim ? `${animeData?.description?.slice(0, maxLength)}.....` : animeData?.description
 
-    // Blur Effect in Lazy load
-    const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
     // Anime Storage Data
     const { animeDetails } = useWebStatePersist()
@@ -45,6 +41,21 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
         const lastWatched = animeDetails.filter(item => item.animeId === animeData?.id).pop()?.watchedEpisode
         setLastWatchedEpisode(lastWatched ? lastWatched[lastWatched?.length - 1] : 1)
     },[animeData, animeDetails])
+
+
+    // Dynamic Iframe Heigh
+    const iframeRef = useRef<any>(null)
+    useEffect(() => {
+      const handleHeight = (event : any) => {
+        if (iframeRef.current && event.data && event.data.type === 'iframeHeight') {
+          iframeRef.current.style.height = `${event.data.height}px`
+        }
+      }
+      window.addEventListener('message', handleHeight)
+      return () => {
+        window.removeEventListener('message', handleHeight)
+      }
+    }, [])
 
   return (
     <div 
@@ -69,33 +80,36 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
         </div>
         
 
-        <div className="max-w-[80%] sm:max-w-none w-10/12 mx-auto lg:flex gap-x-20">
+        <div className="max-w-[80%] sm:max-w-none w-10/12 mx-auto xl:flex gap-x-20">
             {isLoading ? 
-                <Skeleton className="max-w-[85%] lg:min-w-[20rem] h-[23rem] lg:h-[26rem] sm:max-w-md mx-auto lg:mx-0 object-cover rounded-3xl"/>
+                <Skeleton className="max-w-[85%] xl:min-w-[20rem] h-[23rem] xl:h-[26rem] sm:max-w-md mx-auto xl:mx-0 object-cover rounded-3xl"/>
                 :
-                <LazyLoadImage
-                  onLoad={() => setImageLoaded(true)}
-                  wrapperClassName={imageLoaded ? '' : 'blur-up'}
-                  className="max-w-[85%] lg:min-w-[20rem] max-h-[26rem] sm:max-w-md mx-auto lg:mx-0 object-cover rounded-3xl"
-                  alt="Anime Image"
-                  src={animeData?.image}
-                  onError={(e : any )=>{ e.target.onerror = null; e.target.src= onErrorImage}}
-                />
+                episodeData && episodeData[0] &&
+                    // <iframe src={episodeData[0]?.url} className="h-[25rem] w-[50rem] m-auto"></iframe>
+                    // <iframe src={episodeData[0]?.url} className="w-full h-[auto] m-auto"></iframe>
+                    <iframe 
+                        allowFullScreen
+                        src={episodeData[0]?.url} 
+                        scrolling="no"
+                        ref={iframeRef} 
+                        title="Dynamic Height Iframe"  
+                        className="w-[100%] max-w-[100%] h-auto"
+                        />
             }
 
             {isLoading ?
                 <div className="w-full">
-                    <Skeleton className="mb-10 mt-10 lg:mt-4 rounded-3xl custom-transition-duration w-full h-[2rem]"/>
+                    <Skeleton className="mb-10 mt-10 xl:mt-4 rounded-3xl custom-transition-duration w-full h-[2rem]"/>
                     {Array.from({ length: 10 }, (_, index) => (
                             <Skeleton key={index} className="mt-4 rounded-3xl custom-transition-duration w-full h-[1rem]"/>
                         ))
                     }
                 </div>
                 :
-                <div className="mt-0 lg:mt-4">
+                <div className="mt-0 xl:mt-4">
                     {/* Title */}
                     <p className={`text-2xl sm:text-3xl md:text-4xl text-center
-                        lg:text-left mt-10 lg:mt-0 custom-font-rocksalt custom-transition-duration
+                        xl:text-left mt-10 xl:mt-0 custom-font-rocksalt custom-transition-duration
                         ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}`
                         }
                     >
@@ -103,7 +117,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                     </p>
 
                     {/* Other Details */}
-                    <div className="clear-both mt-10 flex flex-wrap justify-center lg:justify-start gap-x-10 gap-y-2">
+                    <div className="clear-both mt-10 flex flex-wrap justify-center xl:justify-start gap-x-10 gap-y-2">
                         {/* Rating */}
                         <p className={`text-base custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`}>
                             Rating :&nbsp;
@@ -135,7 +149,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                     </div>
                     
                     {/* Genres */}
-                    <p className={`text-base custom-transition-duration mt-2 ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'} text-center lg:text-left`}>
+                    <p className={`text-base custom-transition-duration mt-2 ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'} text-center xl:text-left`}>
                         Genres : &nbsp;
                         {animeData?.genres && animeData?.genres.map((genre : string, index : number) => (
                             <span key={index} className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
@@ -146,7 +160,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                     </p>
 
                     {/* Buttons */}
-                    <div className="clear-both mt-10 mb-7 flex flex-col sm:flex-row sm:justify-center gap-5 lg:float-left">
+                    <div className="clear-both mt-10 mb-7 flex flex-col sm:flex-row sm:justify-center gap-5 xl:float-left">
                         <Button
                             value = "Watch"
                             bgColor = "bg-custom-blue-1"
@@ -164,7 +178,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                     </div>
 
                     {/* Description */}
-                    <p className={`text-center lg:text-left text-base max-w-[60rem] custom-transition-duration
+                    <p className={`text-center xl:text-left text-base max-w-[60rem] custom-transition-duration
                             clear-both ${isCheckedTheme ? 'text-custom-gray-2' : 'text-custom-dark-2'}`
                         }
                     >
@@ -174,7 +188,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                     {/* Read More Button */
                     displayedText && displayedText.length && displayedText.length >= 420 &&
                         <p onClick={toggleDescription } 
-                            className={`mt-5 lg:mt-3 text-base text-center mx-auto lg:mx-0 lg:text-left 
+                            className={`mt-5 xl:mt-3 text-base text-center mx-auto xl:mx-0 xl:text-left 
                             w-[7.2rem] cursor-pointer custom-transition-duration hover:sm:text-custom-blue-1
                             hover:sm:underline active:scale-95 ${isCheckedTheme ? 'text-custom-gray-3' : 'text-custom-dark-2'}`}
                         >

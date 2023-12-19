@@ -6,6 +6,7 @@ import { Popular } from "./pages/popularPage/Popular"
 import { SearchPage } from "./helpers/SearchPage"
 import { Selected } from "./pages/SelectedPage/Selected"
 import { useAppStore } from "./store/ZustandStore"
+import { Watch } from "./pages/watchPage/Watch"
 
 function App() {
     // Theme Toggle
@@ -22,6 +23,9 @@ function App() {
 
         {/* Selected Data */}
         <Route path="/Anime/:dataId" element={<Selected/>}/>
+
+        {/* Watch Data */}
+        <Route path="/Watch/:dataId/:episodeId" element={<Watch/>}/>
 
         {/* Helpers */}
         <Route path="/Search" element={<SearchPage/>}/>
