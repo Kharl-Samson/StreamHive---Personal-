@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react"
-import { Button } from "../../../widgets/button/Button"
-import playIcon from "../../../assets/icons/play.png"
-import bookmark from "../../../assets/icons/bookmark.png"
-import { useAppStore, useWebStatePersist } from "../../../store/ZustandStore"
+import { useAppStore } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
-import { saveData } from "@/utils/saveData"
+import { Player } from "@/components/VideoPlayer/Player"
 
 type HeroSectionProps = {
     animeData : any
@@ -33,29 +30,47 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
     const shouldTrim = animeData?.description?.length  && animeData?.description?.length > maxLength && !showFullDescription
     const displayedText = shouldTrim ? `${animeData?.description?.slice(0, maxLength)}.....` : animeData?.description
 
-
-    // Anime Storage Data
-    const { animeDetails } = useWebStatePersist()
-    const [lastWatchedEpisode, setLastWatchedEpisode] = useState<number>(1)
-    useEffect(() => {
-        const lastWatched = animeDetails.filter(item => item.animeId === animeData?.id).pop()?.watchedEpisode
-        setLastWatchedEpisode(lastWatched ? lastWatched[lastWatched?.length - 1] : 1)
-    },[animeData, animeDetails])
-
-
-    // Dynamic Iframe Heigh
+    // Iframe Ref
     const iframeRef = useRef<any>(null)
+
+    // Player Controller
+    const [frameUrl, setFrameUrl] = useState<string>("")
+    const [urlValue, setUrlValue] = useState<string>("")
     useEffect(() => {
-      const handleHeight = (event : any) => {
-        if (iframeRef.current && event.data && event.data.type === 'iframeHeight') {
-          iframeRef.current.style.height = `${event.data.height}px`
+        if(urlValue === "" && episodeData){
+            setFrameUrl(episodeData[0]?.url)
         }
-      }
-      window.addEventListener('message', handleHeight)
-      return () => {
-        window.removeEventListener('message', handleHeight)
-      }
-    }, [])
+        else{
+            setFrameUrl(urlValue)
+        }
+    },[episodeData, urlValue, isLoading])
+
+    // Loading Skeleton
+    const [loader, setLoader] = useState<boolean>(true)
+    useEffect(() => {
+        if(isLoading || loader){
+            const timer = setTimeout(() => {
+                setLoader(false)
+            }, 500)
+            return () => clearTimeout(timer)
+        }
+    },[loader, isLoading])
+
+    const handleFullscreen = () => {
+        if (iframeRef.current) {
+          const iframe = iframeRef.current
+    
+          if (iframe.requestFullscreen) {
+            iframe.requestFullscreen()
+          } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen()
+          } else if (iframe.mozRequestFullScreen) {
+            iframe.mozRequestFullScreen()
+          } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen()
+          }
+        }
+    }
 
   return (
     <div 
@@ -69,32 +84,60 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
         }}
     >
 
-        <div className="mb-16 max-w-[80%] sm:max-w-none w-10/12 mx-auto">
+        <div className="mb-10 max-w-[80%] sm:max-w-none w-10/12 mx-auto">
             <p 
-                className={`text-lg float-left cursor-pointer ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}
+                className={`text-lg float-left mb-4 cursor-pointer ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}
                 hover:underline hover:text-custom-blue-1 disable-highlight active:scale-95 custom-transition-duration`}
                 onClick={() => navigate(-1)}
             >
                 &#8592; Go Back
             </p>
+
+            <div className="flex flex-wrap sm:justify-between gap-3 w-[100%] xl:max-w-[45rem] clear-both">
+                {/* Allow Fulls Screen */}
+                <button 
+                    onClick={handleFullscreen}
+                    className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
+                        disable-highlight custom-transition-duration hover:bg-custom-dark-1 
+                        active:scale-95 whitespace-nowrap`}
+                    // onClick={prevPage}
+                >
+                  Allow Fullscreen
+                </button>
+                
+                <div className="flex flex-wrap sm:justify-end gap-3">
+                    {/* Prev Button */}
+                    <button 
+                        className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
+                            disable-highlight custom-transition-duration hover:bg-custom-dark-2 
+                            active:scale-95 whitespace-nowrap`}
+                        // onClick={prevPage}
+                    >
+                      &#8592; Prev Episode
+                    </button>
+                    {/* Next Button */}
+                    <button 
+                      className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
+                          disable-highlight custom-transition-duration hover:bg-custom-dark-2 
+                          active:scale-95 whitespace-nowrap`}
+                        // onClick={nextPage}
+                    >
+                      Next Episode &#8594;
+                    </button>
+                </div>
+            </div>
         </div>
         
-
         <div className="max-w-[80%] sm:max-w-none w-10/12 mx-auto xl:flex gap-x-20">
-            {isLoading ? 
-                <Skeleton className="max-w-[85%] xl:min-w-[20rem] h-[23rem] xl:h-[26rem] sm:max-w-md mx-auto xl:mx-0 object-cover rounded-3xl"/>
+            {isLoading || loader ? 
+                <Skeleton className="w-[100%] xl:max-w-[45rem]
+                            h-auto min-h-[16.5rem] 580size:min-h-[17rem]
+                            600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
+                            900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
+                            1220size:min-h-[38rem] xl:min-h-0
+                            mx-auto xl:mx-0 object-cover rounded-3xl"/>
                 :
-                episodeData && episodeData[0] &&
-                    // <iframe src={episodeData[0]?.url} className="h-[25rem] w-[50rem] m-auto"></iframe>
-                    // <iframe src={episodeData[0]?.url} className="w-full h-[auto] m-auto"></iframe>
-                    <iframe 
-                        allowFullScreen
-                        src={episodeData[0]?.url} 
-                        scrolling="no"
-                        ref={iframeRef} 
-                        title="Dynamic Height Iframe"  
-                        className="w-[100%] max-w-[100%] h-auto"
-                        />
+                episodeData &&<Player dataUrl = {frameUrl} iframeRef = {iframeRef}/>
             }
 
             {isLoading ?
@@ -108,8 +151,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
                 :
                 <div className="mt-0 xl:mt-4">
                     {/* Title */}
-                    <p className={`text-2xl sm:text-3xl md:text-4xl text-center
-                        xl:text-left mt-10 xl:mt-0 custom-font-rocksalt custom-transition-duration
+                    <p className={`text-2xl sm:text-3xl md:text-4xl mt-10 xl:mt-0 custom-font-rocksalt custom-transition-duration
                         ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}`
                         }
                     >
@@ -117,7 +159,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
                     </p>
 
                     {/* Other Details */}
-                    <div className="clear-both mt-10 flex flex-wrap justify-center xl:justify-start gap-x-10 gap-y-2">
+                    <div className="clear-both mt-10 flex flex-col gap-y-5">
                         {/* Rating */}
                         <p className={`text-base custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`}>
                             Rating :&nbsp;
@@ -134,7 +176,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
                         </p>
                         {/* Episodes */}
                         <p className={`text-base custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`}>
-                            Episodes :&nbsp;
+                            Total Episodes :&nbsp;
                             <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
                                 {animeData?.totalEpisodes}
                             </span>
@@ -146,60 +188,70 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading } :
                                 {animeData?.status}
                             </span>
                         </p>
+
+                        {/* Genres */}
+                        <p className={`text-base custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`}>
+                            Genres : &nbsp;
+                            {animeData?.genres && animeData?.genres.map((genre : string, index : number) => (
+                                <span key={index} className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
+                                    {genre}
+                                    {index !== animeData?.genres.length - 1 && `, `}
+                                </span>
+                            ))}
+                        </p>
+
+                        <div className="mt-6">
+                            <p className={`text-lg font-bold custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>Available Servers</p>
+                            <div className="flex flex-wrap mt-4 gap-5">
+                                {episodeData && episodeData.map((res : any, index : number) => (
+                                    <div key={index} className={`rounded text-xs 400size:text-sm py-2 px-5 flex justify-center disable-highlight 
+                                        cursor-pointer hover:opacity-90 active:scale-95 bg-[#141D2B] text-white`}
+                                        onClick={() => { setUrlValue(res?.url) ; setLoader(!loader) }}
+                                    >
+                                        {res?.name}
+                                    </div>
+                                ))}
+
+                            </div>
+                        </div>
                     </div>
                     
-                    {/* Genres */}
-                    <p className={`text-base custom-transition-duration mt-2 ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'} text-center xl:text-left`}>
-                        Genres : &nbsp;
-                        {animeData?.genres && animeData?.genres.map((genre : string, index : number) => (
-                            <span key={index} className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
-                                {genre}
-                                {index !== animeData?.genres.length - 1 && `, `}
-                            </span>
-                        ))}
-                    </p>
-
-                    {/* Buttons */}
-                    <div className="clear-both mt-10 mb-7 flex flex-col sm:flex-row sm:justify-center gap-5 xl:float-left">
-                        <Button
-                            value = "Watch"
-                            bgColor = "bg-custom-blue-1"
-                            shadeColor = "bg-[#0B3D85]"
-                            icon = {playIcon}
-                            onClick={() => {saveData(animeData?.id, lastWatchedEpisode); navigate(`/watch/${animeData?.id}/${animeData?.id}-episode-${lastWatchedEpisode}`)}}
-                        />
-
-                        <Button
-                            value = "Add to list"
-                            bgColor = "bg-[#111111]"
-                            shadeColor = "bg-[#141D2B]"
-                            icon = {bookmark}
-                        />
-                    </div>
-
-                    {/* Description */}
-                    <p className={`text-center xl:text-left text-base max-w-[60rem] custom-transition-duration
-                            clear-both ${isCheckedTheme ? 'text-custom-gray-2' : 'text-custom-dark-2'}`
-                        }
-                    >
-                        {displayedText}
-                    </p>
-
-                    {/* Read More Button */
-                    displayedText && displayedText.length && displayedText.length >= 420 &&
-                        <p onClick={toggleDescription } 
-                            className={`mt-5 xl:mt-3 text-base text-center mx-auto xl:mx-0 xl:text-left 
-                            w-[7.2rem] cursor-pointer custom-transition-duration hover:sm:text-custom-blue-1
-                            hover:sm:underline active:scale-95 ${isCheckedTheme ? 'text-custom-gray-3' : 'text-custom-dark-2'}`}
-                        >
-                            {shouldTrim && !showFullDescription && !showSeeLess ? 'Read more 👇' : 'See less ☝️'}
-                        </p>
-                    }
                 </div>
             }
    
         </div>
-      
+
+        <div className="max-w-[80%] sm:max-w-none ite w-10/12 mx-auto mt-16">            
+            {/* Description */}
+            {isLoading ?
+                <div className="w-full">
+                    {Array.from({ length: 4 }, (_, index) => (
+                        <Skeleton key={index} className="mt-4 rounded-3xl custom-transition-duration w-full h-[1rem]"/>
+                        ))
+                    }
+                </div>
+                :
+                <>
+                    <p className={`text-base custom-transition-duration clear-both 
+                            ${isCheckedTheme ? 'text-custom-gray-2' : 'text-custom-dark-2'}`
+                        }
+                    >
+                        {displayedText}
+                    </p>
+                    
+                    {/* Read More Button */
+                    displayedText && displayedText.length && displayedText.length >= 420 &&
+                        <p onClick={toggleDescription } 
+                            className={`mt-5 xl:mt-3 text-base custom-transition-duration
+                            w-[7.2rem] cursor-pointer hover:sm:text-custom-blue-1 hover:sm:underline
+                            active:scale-95 ${isCheckedTheme ? 'text-custom-gray-3' : 'text-custom-dark-2'}`}
+                        >
+                            {shouldTrim && !showFullDescription && !showSeeLess ? 'Read more 👇' : 'See less ☝️'}
+                        </p>
+                    }
+                </>
+            }
+        </div>
     </div>
   )
 }

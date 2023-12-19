@@ -51,7 +51,8 @@ export const Watch = () => {
           }, 500)
           return () => clearTimeout(timer)
         }
-    },[isAnimeDataFetch, dataId])
+    },[isAnimeDataFetch, isEpisodeFetch, dataId])
+
     
   return (
     <>

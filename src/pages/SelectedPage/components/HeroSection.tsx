@@ -120,7 +120,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                         </p>
                         {/* Episodes */}
                         <p className={`text-base custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`}>
-                            Episodes :&nbsp;
+                            Total Episodes :&nbsp;
                             <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
                                 {animeData?.totalEpisodes}
                             </span>
