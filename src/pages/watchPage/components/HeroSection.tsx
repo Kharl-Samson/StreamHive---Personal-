@@ -20,6 +20,11 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     // Page Navigator
     const navigate = useNavigate()
 
+    // Episode Numder Data
+    const inputString : string = myEpisodeId
+    const arrayFromString : any = inputString.split("-")
+    const currentEpisode : any = arrayFromString[arrayFromString?.length - 1]
+
     // Description trimmer
     const [showFullDescription, setShowFullDescription] = useState<boolean>(false)
     const [showSeeLess, setShowSeeLess] = useState<boolean>(false)
@@ -42,36 +47,69 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger When Page Loads
     useEffect(() => {
-        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
-        const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
-        if (filelionsUrl) {
-            setServerName("Filelions")
-            setFrameUrl(filelionsUrl?.url || '')
-        } 
-        else if (streamwishUrl) {
+        const streamwishUrl = episodeData?.find((item : any) => item?.name === "Streamwish")
+        const filelionsUrl = episodeData?.find((item : any) => item?.name === "Filelions")
+        const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
+        const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
+        const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
+
+        if (streamwishUrl) {
             setServerName("Streamwish")
             setFrameUrl(streamwishUrl?.url || '')
         } 
-    }, [episodeData])
+        else if (filelionsUrl) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
+        } 
+        else if (vidstreamingUrl){
+            setServerName("Vidstreaming")
+            setFrameUrl(vidstreamingUrl?.url || '')
+        }
+        else if (gogoServerUrl){
+            setServerName("Gogo server")
+            setFrameUrl(gogoServerUrl?.url || '')
+        }
+        else if (mp4UploadUrl){
+            setServerName("Mp4Upload")
+            setFrameUrl(mp4UploadUrl?.url || '')
+        }
+        else{
+            setServerName("Other Server")
+        }
+    }, [episodeData, currentEpisode])
 
     // Trigger Every Time this data changed -> episodeData, urlValue, isLoading, serverName
     useEffect(() => {
-        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
         const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
+        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
+        const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
+        const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
+        const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
 
-        if (filelionsUrl?.name === serverName) {
-            setServerName("Filelions")
-            setFrameUrl(filelionsUrl?.url || '')
-        } 
-        else if (streamwishUrl?.name === serverName) {
+        if (streamwishUrl?.name === serverName) {
             setServerName("Streamwish")
             setFrameUrl(streamwishUrl?.url || '')
         } 
+        else if (filelionsUrl?.name === serverName) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
+        } 
+        else if (vidstreamingUrl === serverName){
+            setServerName("Vidstreaming")
+            setFrameUrl(vidstreamingUrl?.url || '')
+        }
+        else if (gogoServerUrl === serverName){
+            setServerName("Gogo server")
+            setFrameUrl(gogoServerUrl?.url || '')
+        }
+        else if (mp4UploadUrl === serverName){
+            setServerName("Mp4Upload")
+            setFrameUrl(mp4UploadUrl?.url || '')
+        }
         else {
             setFrameUrl(episodeData && episodeData[0]?.url)
         }
     },[episodeData, urlValue, isLoading, serverName])
-
 
     // Loading Skeleton
     const [loader, setLoader] = useState<boolean>(true)
@@ -104,17 +142,16 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     // Get User's Operating System
     const operatingSystem = navigator.platform // Get the user"s operating system
 
-    // Pagination Controlle
-    const inputString : string = myEpisodeId
-    const arrayFromString : any = inputString.split("-")
-    const currentEpisode : any = arrayFromString[arrayFromString?.length - 1]
+    // Pagination Controller
 
     // Trigger Next Page
     const nextPage = () => {
+        setLoader(true)
         navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) + 1}`)
     }
     // Trigger Prev Page
     const prevPage = () => {
+        setLoader(true)
         navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) - 1}`)
     }
   
@@ -145,21 +182,21 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                 operatingSystem.includes("Win") &&
                     <button 
                         onClick={handleFullscreen}
-                        className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
-                            disable-highlight custom-transition-duration hover:bg-custom-dark-1 
-                            active:scale-95 whitespace-nowrap`}
+                        className={`text-white bg-custom-dark-2 py-2 rounded-md w-full 500size:w-[10rem] 
+                            disable-highlight custom-transition-duration sm:hover:bg-custom-dark-1 
+                            active:scale-95 whitespace-nowrap ${isLoading ? 'invisible' : 'visible'}`}
                     >
                       Allow Fullscreen
                     </button>
                 }
                 
-                <div className="flex flex-wrap sm:justify-end gap-3">
+                <div className="flex flex-wrap sm:justify-end gap-3 w-full 500size:w-auto">
                     {/* Prev Button */
                     parseInt(currentEpisode) !== 1 &&
                         <button 
-                            className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
-                                disable-highlight custom-transition-duration hover:bg-custom-dark-2 
-                                active:scale-95 whitespace-nowrap`}
+                            className={`text-white bg-custom-blue-1 py-2 rounded-md w-full 500size:w-[10rem] 
+                                disable-highlight custom-transition-duration sm:hover:bg-custom-dark-2 
+                                active:scale-95 whitespace-nowrap ${isLoading && 'pointer-events-none opacity-80'}`}
                             onClick={prevPage}
                         >
                           &#8592; Prev Episode
@@ -169,9 +206,9 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                     {/* Next Button */
                     animeData?.totalEpisodes !== parseInt(currentEpisode) &&
                         <button 
-                          className={`text-white bg-custom-blue-1 px-5 py-2 rounded-md 
-                              disable-highlight custom-transition-duration hover:bg-custom-dark-2 
-                              active:scale-95 whitespace-nowrap`}
+                          className={`text-white bg-custom-blue-1 py-2 rounded-md w-full 500size:w-[10rem] 
+                              disable-highlight custom-transition-duration sm:hover:bg-custom-dark-2 
+                              active:scale-95 whitespace-nowrap ${isLoading && 'pointer-events-none opacity-80'}`}
                             onClick={nextPage}
                         >
                           Next Episode &#8594;
@@ -209,9 +246,14 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                     }
                 </div>
                 :
-                <div className="mt-0 xl:mt-4">
+                <div className="mt-5 xl:mt-0 xl:mb-4">
+                    {/* Episode Number */}
+                    <p className={`text-xl font-semibold custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
+                            Episode {currentEpisode}
+                    </p>
+
                     {/* Title */}
-                    <p className={`text-2xl sm:text-3xl md:text-4xl mt-10 xl:mt-0 custom-font-rocksalt custom-transition-duration
+                    <p className={`text-2xl sm:text-3xl md:text-4xl mt-4 custom-font-rocksalt custom-transition-duration
                         ${isCheckedTheme ? 'text-white' : 'text-custom-dark-1'}`
                         }
                     >
@@ -260,6 +302,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                             ))}
                         </p>
 
+                        {/* Available Servers */}
                         <div className="mt-6">
                             <p className={`text-lg font-bold custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>Available Servers</p>
                             <div className="flex flex-wrap mt-4 gap-5">
