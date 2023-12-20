@@ -19,6 +19,7 @@ export default {
         "1000size": "1000px",
         "1100size": "1100px",
         "1220size" : "1220px",
+        "1460size" : "1460px",
         "1700size" : "1700px",
         "1920size" : "1920px"
       },

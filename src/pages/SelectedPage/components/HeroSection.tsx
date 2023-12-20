@@ -5,10 +5,10 @@ import bookmark from "../../../assets/icons/bookmark.png"
 import onErrorImage from "../../../assets/onErrorImage.png"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
-import { useAppStore, useWebStatePersist } from "../../../store/ZustandStore"
+import { useAppStore, useAnimeDataPersist } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
-import { saveData } from "@/utils/saveData"
+import { addToList, saveData } from "@/utils/saveData"
 
 type HeroSectionProps = {
     animeData : any
@@ -39,7 +39,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
     const [imageLoaded, setImageLoaded] = useState<boolean>(false)
 
     // Anime Storage Data
-    const { animeDetails } = useWebStatePersist()
+    const { animeDetails } = useAnimeDataPersist()
     const [lastWatchedEpisode, setLastWatchedEpisode] = useState<number>(1)
     useEffect(() => {
         const lastWatched = animeDetails.filter(item => item.animeId === animeData?.id).pop()?.watchedEpisode
@@ -160,6 +160,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                             bgColor = "bg-[#111111]"
                             shadeColor = "bg-[#141D2B]"
                             icon = {bookmark}
+                            onClick={() => addToList(animeData?.id || "", animeData?.title || "", animeData?.image || "", animeData?.totalEpisodes || 0)}
                         />
                     </div>
 

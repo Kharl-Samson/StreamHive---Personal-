@@ -8,6 +8,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
 import { useAppStore } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
+import { addToList } from "@/utils/saveData"
 
 type HeroData = {
     id : string,
@@ -15,8 +16,10 @@ type HeroData = {
     description : string
     backgroundImage : string
     image : string
+    realImage? : string
     rating : number
     releaseDate : number
+    type : string
     totalEpisodes: number
     genres: string[]
 }
@@ -66,7 +69,7 @@ export const HeroSection = () => {
             <LazyLoadImage
               onLoad={() => setImageLoaded(true)}
               wrapperClassName={imageLoaded ? '' : 'blur-up'}
-              className="max-w-[85%] max-h-[26rem] sm:max-w-md mx-auto lg:mx-0 object-cover rounded-3xl"
+              className="max-w-[85%] lg:min-w-[20rem] max-h-[26rem] sm:max-w-md mx-auto lg:mx-0 object-cover rounded-3xl"
               alt="Anime Image"
               src={dataArray?.image}
               onError={(e : any )=>{ e.target.onerror = null; e.target.src= onErrorImage}}
@@ -87,14 +90,16 @@ export const HeroSection = () => {
                     {displayedText}
                 </p>
 
-                {/* Read More Button */}
-                <p onClick={toggleDescription } 
-                    className={`mt-5 lg:mt-3 text-base text-center mx-auto lg:mx-0 lg:text-left 
-                    w-[7.2rem] cursor-pointer custom-transition-duration hover:sm:text-custom-blue-1
-                    hover:sm:underline active:scale-95 ${isCheckedTheme ? 'text-custom-gray-3' : 'text-custom-dark-2'}`}
-                >
-                    {shouldTrim && !showFullDescription && !showSeeLess ? 'Read more 👇' : 'See less ☝️'}
-                </p>
+                {/* Read More Button */
+                displayedText && displayedText.length && displayedText.length >= 420 &&
+                    <p onClick={toggleDescription } 
+                        className={`mt-5 lg:mt-3 text-base text-center mx-auto lg:mx-0 lg:text-left 
+                        w-[7.2rem] cursor-pointer custom-transition-duration hover:sm:text-custom-blue-1
+                        hover:sm:underline active:scale-95 ${isCheckedTheme ? 'text-custom-gray-3' : 'text-custom-dark-2'}`}
+                    >
+                        {shouldTrim && !showFullDescription && !showSeeLess ? 'Read more 👇' : 'See less ☝️'}
+                    </p>
+                }
 
                 {/* Buttons */}
                 <div className="clear-both mt-10 lg:mt-12 flex flex-col sm:flex-row sm:justify-center gap-5 lg:float-left">
@@ -111,6 +116,7 @@ export const HeroSection = () => {
                         bgColor = "bg-[#111111]"
                         shadeColor = "bg-[#141D2B]"
                         icon = {bookmark}
+                        onClick={() => addToList(dataArray?.id || "", dataArray?.title || "", dataArray?.realImage ? dataArray?.realImage : dataArray?.image || "",  dataArray?.totalEpisodes || 0)}
                     />
                 </div>
 
@@ -132,7 +138,7 @@ export const HeroSection = () => {
                             ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`
                         }
                     >
-                        Episodes : <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>{dataArray?.totalEpisodes}</span>
+                        Type : <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>{dataArray?.type}</span>
                     </p>
                     <p className={`text-base custom-transition-duration 
                             ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'} text-center lg:text-left`

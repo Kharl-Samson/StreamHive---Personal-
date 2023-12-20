@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 type PlayerProps = {
     dataUrl : string
@@ -21,40 +21,29 @@ export const Player = ({dataUrl, serverName, iframeRef, frameStyle} :PlayerProps
       }
     }, [])
 
+    // Iframe Props
+    const iframeProps = {
+      allowFullScreen: true,
+      scrolling: "no",
+      ref: iframeRef,
+      title: "Video Player",
+      className: `w-[100%] xl:max-w-[45rem] h-auto min-h-[16.5rem] 580size:min-h-[17rem]
+                600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
+                900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
+                1220size:min-h-[38rem] xl:min-h-0 ${frameStyle}`
+    }
+
   return (
     <>
-    {// Without Ads
-      serverName === "Filelions" || serverName === "Streamwish" ?
-        <iframe 
-          allowFullScreen
-          src={dataUrl} 
-          scrolling="no"
-          ref={iframeRef} 
-          title="Video Player"  
-          sandbox="allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-scripts allow-top-navigation allow-forms"
-          className={
-              `w-[100%] xl:max-w-[45rem] h-auto min-h-[16.5rem] 580size:min-h-[17rem]
-              600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
-              900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
-              1220size:min-h-[38rem] xl:min-h-0 ${frameStyle}`
-            }
-        />
-      :
-      // With Ads
-        <iframe 
-          allowFullScreen
-          src={dataUrl} 
-          scrolling="no"
-          ref={iframeRef} 
-          title="Video Player"  
-          className={
-              `w-[100%] xl:max-w-[45rem] h-auto min-h-[16.5rem] 580size:min-h-[17rem]
-              600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
-              900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
-              1220size:min-h-[38rem] xl:min-h-0 ${frameStyle}`
-            }
-        />
-    }
+      <iframe
+        src={dataUrl} 
+        {...iframeProps}
+        sandbox={
+          serverName === "Filelions" || serverName === "Streamwish"
+            ? "allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-scripts allow-top-navigation allow-forms"
+            : undefined
+        }
+      />
     </>
   )
 }

@@ -32,7 +32,7 @@ type WebStateStore = {
 }
 
 // Storing web states in client side
-const useWebStatePersist = create<WebStateStore>()(
+const useAnimeDataPersist = create<WebStateStore>()(
   persist(
     (set) => ({
       animeDetails: [],
@@ -45,4 +45,29 @@ const useWebStatePersist = create<WebStateStore>()(
   )
 )
 
-export { useAppStore, useWebStatePersist }
+type AnimeDetailsList = {
+  animeId: string
+  animeName: string
+  animeImage: string
+  totalEpisodes: number
+}
+
+type MyListStateStore = {
+  myListDetails: AnimeDetailsList[]
+  setMyListDetails: (value: AnimeDetailsList[]) => void
+}
+
+const useMyListPersist = create<MyListStateStore>()(
+  persist(
+    (set) => ({
+      myListDetails: [],
+      setMyListDetails: (value: AnimeDetailsList[]) => set({ myListDetails: value })
+    }),
+    {
+      name: "MyList",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+)
+
+export { useAppStore, useAnimeDataPersist, useMyListPersist }

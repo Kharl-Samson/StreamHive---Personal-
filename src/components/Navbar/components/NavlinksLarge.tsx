@@ -48,7 +48,15 @@ export const NavlinksLarge = ({active} : NavlinksLargeProps) => {
         >
             Popular
         </li>
-        <li className="text-base list-none cursor-pointer hover:text-custom-blue-1 custom-transition-duration disable-highlight active:scale-95">My List</li>
+        {/* My List */}
+        <li 
+            className={`text-base list-none cursor-pointer hover:text-custom-blue-1 
+                custom-transition-duration disable-highlight active:scale-95 font-normal
+                ${active === "My List" && isCheckedTheme ? 'text-white font-semibold' : active === "My List" && !isCheckedTheme ? 'font-semibold' : 'font-normal'}`}
+            onClick={() => navigate("/MyList")}
+        >
+            My List
+        </li>
     </div>
   )
 }

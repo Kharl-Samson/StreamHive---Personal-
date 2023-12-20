@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { Skeleton } from "@/components/ui/skeleton"
-import { useAppStore, useWebStatePersist } from '@/store/ZustandStore'
+import { useAppStore, useAnimeDataPersist } from '@/store/ZustandStore'
 import { saveData } from '@/utils/saveData'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,7 +18,7 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
     const {isCheckedTheme} = useAppStore()
 
     // Anime Storage Data
-    const { animeDetails } = useWebStatePersist()
+    const { animeDetails } = useAnimeDataPersist()
 
     // Pagination Controller
     const [page, setPage] = useState<{ startPage: number; endPage: number }>({

@@ -1,9 +1,11 @@
-import { useWebStatePersist } from "@/store/ZustandStore"
+import { useAnimeDataPersist, useMyListPersist } from "@/store/ZustandStore"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 // Trigger when click the episode
 export const saveData = (animeId: string, watchedEpisode: number) => {
     // Anime Storage Data
-    const { animeDetails, setAnimeDetails } = useWebStatePersist.getState()
+    const { animeDetails, setAnimeDetails } = useAnimeDataPersist.getState()
     let isUpdated = false
   
     const updatedData = animeDetails.map(item => {
@@ -29,4 +31,51 @@ export const saveData = (animeId: string, watchedEpisode: number) => {
     } else {
       setAnimeDetails(updatedData)
     }
+}
+
+export const addToList = (animeId: string, animeName: string, animeImage: string, totalEpisodes : number) => {
+    // My list Storage Data
+    const { myListDetails, setMyListDetails } = useMyListPersist.getState()
+    let isUpdated = false
+
+    const updatedData = myListDetails.map(item => {
+      if (item.animeId === animeId) {
+        isUpdated = true
+        return {
+          ...item,
+          totalEpisodes: totalEpisodes
+        }
+      }
+      return item
+    })
+
+    if (!isUpdated) {
+      setMyListDetails([
+        ...myListDetails,
+        {
+          animeId: animeId,
+          animeName: animeName,
+          animeImage : animeImage,
+          totalEpisodes: totalEpisodes
+        }
+      ])
+      toast.success("Added to the list succesfully")
+    } else {
+      setMyListDetails(updatedData)
+      toast.info("This anime is already in your list")
+    }
+}
+
+export const removeFromList = (animeIdToRemove: string) => {
+  // My list Storage Data
+  const { myListDetails, setMyListDetails } = useMyListPersist.getState()
+
+  const updatedList = myListDetails.filter(item => item.animeId !== animeIdToRemove)
+
+  if (updatedList.length !== myListDetails.length) {
+    setMyListDetails(updatedList)
+    toast.success("Anime removed from the list successfully")
+  } else {
+    toast.error("Anime not found in your list")
   }
+}

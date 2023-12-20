@@ -7,6 +7,10 @@ import { SearchPage } from "./helpers/SearchPage"
 import { Selected } from "./pages/SelectedPage/Selected"
 import { useAppStore } from "./store/ZustandStore"
 import { Watch } from "./pages/watchPage/Watch"
+import { ScrollToTop } from "./helpers/ScrollToTop"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { MyList } from "./pages/myListPage/MyList"
 
 function App() {
     // Theme Toggle
@@ -14,12 +18,14 @@ function App() {
 
   return (
     <div className={`custom-transition-duration ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}>
+      <ScrollToTop/>
       <Routes>
         {/* Main Pages */}
         <Route path="/" element={<Home/>}/>
         <Route path="/Trending" element={<Trending/>}/>
         <Route path="/Latest" element={<Latest/>}/>
         <Route path="/Popular" element={<Popular/>}/>
+        <Route path="/MyList" element={<MyList/>}/>
 
         {/* Selected Data */}
         <Route path="/Anime/:dataId" element={<Selected/>}/>
@@ -30,6 +36,20 @@ function App() {
         {/* Helpers */}
         <Route path="/Search" element={<SearchPage/>}/>
       </Routes>
+
+      {/* Toast Container */}
+      <ToastContainer
+        position='top-right'
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme='colored'
+      />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { useAppStore } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Player } from "@/components/VideoPlayer/Player"
+import { saveData } from "@/utils/saveData"
 
 type HeroSectionProps = {
     animeData : any
@@ -47,20 +48,20 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger When Page Loads
     useEffect(() => {
-        const streamwishUrl = episodeData?.find((item : any) => item?.name === "Streamwish")
         const filelionsUrl = episodeData?.find((item : any) => item?.name === "Filelions")
+        const streamwishUrl = episodeData?.find((item : any) => item?.name === "Streamwish")
         const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
         const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
 
-        if (streamwishUrl) {
-            setServerName("Streamwish")
-            setFrameUrl(streamwishUrl?.url || '')
-        } 
-        else if (filelionsUrl) {
+        if (filelionsUrl) {
             setServerName("Filelions")
             setFrameUrl(filelionsUrl?.url || '')
-        } 
+        }
+        else if (streamwishUrl) {
+            setServerName("Streamwish")
+            setFrameUrl(streamwishUrl?.url || '')
+        }  
         else if (vidstreamingUrl){
             setServerName("Vidstreaming")
             setFrameUrl(vidstreamingUrl?.url || '')
@@ -80,19 +81,19 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger Every Time this data changed -> episodeData, urlValue, isLoading, serverName
     useEffect(() => {
-        const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
         const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
+        const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
         const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
         const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
 
-        if (streamwishUrl?.name === serverName) {
-            setServerName("Streamwish")
-            setFrameUrl(streamwishUrl?.url || '')
-        } 
-        else if (filelionsUrl?.name === serverName) {
+        if (filelionsUrl?.name === serverName) {
             setServerName("Filelions")
             setFrameUrl(filelionsUrl?.url || '')
+        } 
+        else if (streamwishUrl?.name === serverName) {
+            setServerName("Streamwish")
+            setFrameUrl(streamwishUrl?.url || '')
         } 
         else if (vidstreamingUrl === serverName){
             setServerName("Vidstreaming")
@@ -147,15 +148,16 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     // Trigger Next Page
     const nextPage = () => {
         setLoader(true)
+        saveData(dataId || "", parseInt(currentEpisode) + 1)
         navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) + 1}`)
     }
     // Trigger Prev Page
     const prevPage = () => {
         setLoader(true)
+        saveData(dataId || "", parseInt(currentEpisode) - 1)
         navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) - 1}`)
     }
   
-
   return (
     <div 
         className="pb-[8rem] pt-[5rem] rounded-b-[5rem] custom-gradient-bg-dark" 
@@ -177,7 +179,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                 &#8592; Go Back
             </p>
 
-            <div className="flex flex-wrap sm:justify-between gap-3 w-[100%] xl:max-w-[45rem] clear-both">
+            <div className="flex flex-wrap sm:justify-between xl:justify-start 1460size:justify-between gap-3 w-[100%] 1460size:max-w-[45rem] clear-both">
                 {/* Allow Fulls Screen */
                 operatingSystem.includes("Win") &&
                     <button 

@@ -8,7 +8,7 @@ type ItemProps = {
     id : string
     title : string
     image : string
-    genres : string[]
+    genres? : string[]
     episodeNumber? : number | string
     releaseDate? : string
 }
