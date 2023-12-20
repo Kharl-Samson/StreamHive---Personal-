@@ -48,20 +48,20 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger When Page Loads
     useEffect(() => {
-        const filelionsUrl = episodeData?.find((item : any) => item?.name === "Filelions")
         const streamwishUrl = episodeData?.find((item : any) => item?.name === "Streamwish")
+        const filelionsUrl = episodeData?.find((item : any) => item?.name === "Filelions")
         const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
         const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
 
-        if (filelionsUrl) {
-            setServerName("Filelions")
-            setFrameUrl(filelionsUrl?.url || '')
-        }
-        else if (streamwishUrl) {
+        if (streamwishUrl) {
             setServerName("Streamwish")
             setFrameUrl(streamwishUrl?.url || '')
-        }  
+        } 
+        else if (filelionsUrl) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
+        } 
         else if (vidstreamingUrl){
             setServerName("Vidstreaming")
             setFrameUrl(vidstreamingUrl?.url || '')
@@ -81,19 +81,19 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger Every Time this data changed -> episodeData, urlValue, isLoading, serverName
     useEffect(() => {
-        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
         const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
+        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
         const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
         const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
 
-        if (filelionsUrl?.name === serverName) {
-            setServerName("Filelions")
-            setFrameUrl(filelionsUrl?.url || '')
-        } 
-        else if (streamwishUrl?.name === serverName) {
+        if (streamwishUrl?.name === serverName) {
             setServerName("Streamwish")
             setFrameUrl(streamwishUrl?.url || '')
+        } 
+        else if (filelionsUrl?.name === serverName) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
         } 
         else if (vidstreamingUrl === serverName){
             setServerName("Vidstreaming")
