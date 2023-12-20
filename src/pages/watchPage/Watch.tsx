@@ -75,6 +75,7 @@ export const Watch = () => {
           <EpisodesContainer
               animeData = {animeData} 
               isLoading = {isLoading}
+              myEpisodeId = {myEpisodeId}
           />
         }
 

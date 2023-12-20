@@ -8,9 +8,10 @@ import { useNavigate } from 'react-router-dom'
 type EpisodesContainerProps = {
     animeData : any
     isLoading : boolean
+    myEpisodeId? : string
 }
 
-export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerProps) => {
+export const EpisodesContainer = ({ animeData, isLoading, myEpisodeId } : EpisodesContainerProps) => {
     // Page Navigator
     const navigate = useNavigate()
     
@@ -26,14 +27,46 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
         endPage: 100,
     })
 
+    // Episode Numder Data
+    const inputString : string = myEpisodeId || ""
+    const arrayFromString : any = inputString.split("-")
+    const currentEpisode : any = arrayFromString[arrayFromString?.length - 1]
+
     // Range Dropdown
     const [ranges, setRanges] = useState<string[]>([])
     const [selectedRange, setSelectedRange] = useState('')
+
+    // Sort Dropdown
+    const [selectedSort, setSelectedSort] = useState<string>("Oldest")
 
     // Load available data in dropdown
     useEffect(() => {
       generateRanges()
     }, [animeData?.totalEpisodes])
+
+    useEffect(() => {
+      setSelectedRange(findRangeForEpisode(currentEpisode))
+      myEpisodeId && saveData(animeData?.id, parseInt(currentEpisode))
+
+      const selectedValue = findRangeForEpisode(currentEpisode)
+      if (selectedValue !== '') {
+        const [startStr, endStr] = selectedValue.split('-')
+        const start = parseInt(startStr, 10)
+        const end = parseInt(endStr, 10)
+        setPage((prevPage) => ({
+          ...prevPage,
+          startPage: start,
+          endPage: end
+        }))
+      } 
+      else {
+        setPage((prevPage) => ({
+          ...prevPage,
+          startPage: 1,
+          endPage: 100
+        }))
+      }
+    }, [currentEpisode, isLoading])
     
     const generateRanges = () => {
       const numRanges = Math.ceil(animeData?.totalEpisodes / 100)
@@ -45,7 +78,21 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
       setRanges(newRanges)
     }
 
-    // Onchange event in dropdown
+    // Function to find the range for a given episode
+    const findRangeForEpisode = (episode: number): string => {
+      let selectedRange = ''
+      ranges.forEach((range) => {
+        const [startStr, endStr] = range.split('-')
+        const start = parseInt(startStr, 10)
+        const end = parseInt(endStr, 10)
+        if (episode >= start && episode <= end) {
+          selectedRange = range
+        }
+      })
+      return selectedRange
+    }
+
+    // Onchange event in dropdown -> Range
     const handleRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       const selectedValue = event.target.value
       setSelectedRange(event.target.value)
@@ -69,6 +116,37 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
       }
     }
 
+    // Onchange event in dropdown -> Sort
+    const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      if(event.target.value === "Oldest"){
+        setSelectedSort(event.target.value)
+        setSelectedRange(ranges[0])
+
+        const [startStr, endStr] = ranges[0].split('-')
+        const start = parseInt(startStr, 10)
+        const end = parseInt(endStr, 10)
+        setPage((prevPage) => ({
+          ...prevPage,
+          startPage: start,
+          endPage: end
+        }))
+      }
+      else{
+        setSelectedSort(event.target.value)
+        setSelectedRange(ranges[ranges.length - 1])
+
+        const [startStr, endStr] = ranges[ranges.length - 1].split('-')
+        const start = parseInt(startStr, 10)
+        const end = parseInt(endStr, 10)
+        setPage((prevPage) => ({
+          ...prevPage,
+          startPage: start,
+          endPage: end
+        }))
+        
+      }
+    }
+    
   return (
     <section className={`min-h-[14rem] w-full custom-transition-duration pb-10 lg:pb-14 ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}>
         <div className={`max-w-[80%] sm:max-w-none w-10/12 mx-auto mt-16`}>
@@ -84,20 +162,35 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
                     Unwind and savor the pleasure of watching your favorite shows for a relaxing and enjoyable experience.
                 </p>
 
-                {/* Filter Page */
-                  animeData?.totalEpisodes && animeData?.totalEpisodes >= 100 &&
-                    <select 
-                      value={selectedRange} 
-                      onChange={handleRangeChange} 
-                      className="text-white bg-custom-dark-2 px-5 py-2 rounded-md disable-highlight cursor-pointer whitespace-nowrap mt-4 lg:mt-[-.50rem] outline-none"
-                    >
-                      {ranges.map((range, index) => (
-                        <option key={index} value={range}>
-                          {range}
-                        </option>
-                      ))}
-                    </select>
-                }
+                <div className="flex flex-wrap gap-3 mt-4 lg:mt-[-.50rem]">
+                  {/* Filter Page */
+                    animeData?.totalEpisodes && animeData?.totalEpisodes >= 100 &&
+                      <select 
+                        value={selectedRange} 
+                        onChange={handleRangeChange} 
+                        className="text-white bg-custom-dark-2 px-5 py-2 rounded-md disable-highlight cursor-pointer whitespace-nowrap outline-none w-full 330size:w-auto"
+                      >
+                        {ranges.map((range, index) => (
+                          <option key={index} value={range}>
+                            {range}
+                          </option>
+                        ))}
+                      </select>
+                  }
+
+                  {/* Sort by date */
+                    animeData?.totalEpisodes && animeData?.totalEpisodes >= 100 &&
+                      <select 
+                        value={selectedSort} 
+                        onChange={handleSortChange} 
+                        className="text-white bg-custom-dark-2 px-5 py-2 rounded-md disable-highlight cursor-pointer whitespace-nowrap outline-none w-full 330size:w-auto"
+                      >
+                        <option value="Oldest">Oldest</option>
+                        <option value="Latest">Latest</option>
+                      </select>
+                  }
+
+                </div>
             </div>
 
             <div className="mt-7">
@@ -140,7 +233,7 @@ export const EpisodesContainer = ({ animeData, isLoading } : EpisodesContainerPr
                   if (res?.number && page?.startPage <= res.number && res.number <= page?.endPage) {
                     const isWatched = animeDetails.find(item => item.animeId === animeData?.id && item.watchedEpisode.includes(res?.number))
                     const lastWatched = animeDetails.find(item => item.animeId === animeData?.id)?.watchedEpisode.slice(-1)[0]
-
+                  
                     return (
                       <div
                         className={`rounded text-xs 400size:text-sm py-2 flex justify-center 

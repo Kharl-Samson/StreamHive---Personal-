@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       screens: {
+        "330size": "330px",
         "360size": "360px",
         "400size": "400px",
         "500size": "500px",

@@ -41,6 +41,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
     // Anime Storage Data
     const { animeDetails } = useAnimeDataPersist()
     const [lastWatchedEpisode, setLastWatchedEpisode] = useState<number>(1)
+    
     useEffect(() => {
         const lastWatched = animeDetails.filter(item => item.animeId === animeData?.id).pop()?.watchedEpisode
         setLastWatchedEpisode(lastWatched ? lastWatched[lastWatched?.length - 1] : 1)
