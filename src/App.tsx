@@ -11,6 +11,7 @@ import { ScrollToTop } from "./helpers/ScrollToTop"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { MyList } from "./pages/myListPage/MyList"
+import { NotFoundPage } from "./helpers/NotFoundPage"
 
 function App() {
     // Theme Toggle
@@ -35,11 +36,12 @@ function App() {
 
         {/* Helpers */}
         <Route path="/Search" element={<SearchPage/>}/>
+        <Route path="*" element={<NotFoundPage/>}/>
       </Routes>
 
       {/* Toast Container */}
       <ToastContainer
-        position='top-right'
+        position='bottom-left'
         autoClose={3000}
         hideProgressBar={true}
         newestOnTop={false}

@@ -57,11 +57,13 @@ export const Selected = () => {
             isLoading = {isLoading}
         />
 
-        {/* Episodes Container */}
-        <EpisodesContainer
-            animeData = {animeData} 
-            isLoading = {isLoading}
-        />
+        {/* Episodes Container */
+        animeData?.type !== "MOVIE" &&
+          <EpisodesContainer
+              animeData = {animeData} 
+              isLoading = {isLoading}
+          />
+        }
 
         {/* Popular Now Section */}
         <ListContainer 

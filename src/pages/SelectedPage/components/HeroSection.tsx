@@ -120,9 +120,9 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                         </p>
                         {/* Episodes */}
                         <p className={`text-base custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`}>
-                            Total Episodes :&nbsp;
-                            <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
-                                {animeData?.totalEpisodes}
+                            {animeData?.type !== "MOVIE" ? `Total Episodes` : `Type`} :&nbsp;
+                            <span className={`text-lg font-medium custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
+                                {animeData?.type !== "MOVIE" ? animeData?.totalEpisodes : animeData?.type.charAt(0)+animeData?.type.slice(1).toLowerCase()}
                             </span>
                         </p>
                         {/* Status */}

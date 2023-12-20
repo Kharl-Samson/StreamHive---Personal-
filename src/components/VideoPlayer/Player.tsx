@@ -29,8 +29,9 @@ export const Player = ({dataUrl, serverName, iframeRef, frameStyle} :PlayerProps
       title: "Video Player",
       className: `w-[100%] xl:max-w-[45rem] h-auto min-h-[16.5rem] 580size:min-h-[17rem]
                 600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
-                900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
-                1220size:min-h-[38rem] xl:min-h-0 ${frameStyle}`
+                900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem]
+                1220size:min-h-[38rem] xl:min-h-0 ${frameStyle}
+                ${serverName === "Filelions" || serverName === "Streamwish" && 'rounded-xl'}`
     }
 
   return (

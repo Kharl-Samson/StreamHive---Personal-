@@ -51,7 +51,7 @@ export const SearchPage = () => {
                                 <input 
                                     type="submit" 
                                     value="Search" 
-                                    className="bg-custom-blue-1 py-2 px-4 rounded-tr-lg rounded-br-lg text-white hover:bg-blue-800 transition-colors cursor-pointer"
+                                    className="bg-custom-blue-1 py-2 px-4 rounded-tr-lg rounded-br-lg text-white sm:hover:bg-blue-800 transition-colors cursor-pointer"
                                 />
                             </div>
                         </form>
@@ -61,7 +61,7 @@ export const SearchPage = () => {
                         {/* Go back to page */}
                         <button 
                           className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
-                                disable-highlight custom-transition-duration hover:bg-custom-blue-1 
+                                disable-highlight custom-transition-duration sm:hover:bg-custom-blue-1 
                                 active:scale-95 whitespace-nowrap`}
                                 onClick={() => navigate(-1)}
                         >
@@ -70,7 +70,7 @@ export const SearchPage = () => {
                         {/* Reset search */}
                         <button 
                           className={`text-white bg-custom-dark-2 px-5 py-2 rounded-md 
-                                disable-highlight custom-transition-duration hover:bg-custom-blue-1 
+                                disable-highlight custom-transition-duration sm:hover:bg-custom-blue-1 
                                 active:scale-95 whitespace-nowrap`}
                                 onClick={() => { setInputValue(''); setHasSearch(false)}}
                         >

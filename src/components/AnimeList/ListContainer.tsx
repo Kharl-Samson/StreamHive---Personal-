@@ -181,7 +181,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
             </div>
             
             {/* Button below if has see all is not true */
-            !hasSeeAll &&
+            !hasSeeAll && combinedData?.results.length !== 0 &&
               <div className="flex flex-wrap justify-center md:justify-end gap-3 mt-10">
                 {/* Prev Button */}
                 <button 

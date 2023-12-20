@@ -38,9 +38,6 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     const shouldTrim = animeData?.description?.length  && animeData?.description?.length > maxLength && !showFullDescription
     const displayedText = shouldTrim ? `${animeData?.description?.slice(0, maxLength)}.....` : animeData?.description
 
-    // Iframe Ref
-    const iframeRef = useRef<any>(null)
-
     // Player Controller
     const [frameUrl, setFrameUrl] = useState<string>("")
     const [urlValue, setUrlValue] = useState<string>("")
@@ -123,6 +120,9 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
         }
     },[loader, isLoading])
 
+    // Iframe Ref
+    const iframeRef = useRef<any>(null)
+
     // To Full Screen Iframe
     const handleFullscreen = () => {
         if (iframeRef.current) {
@@ -141,17 +141,15 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     }
 
     // Get User's Operating System
-    const operatingSystem = navigator.platform // Get the user"s operating system
+    const operatingSystem = navigator.platform
 
-    // Pagination Controller
-
-    // Trigger Next Page
+    // Pagination Controller -> Trigger Next Page
     const nextPage = () => {
         setLoader(true)
         saveData(dataId || "", parseInt(currentEpisode) + 1)
         navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) + 1}`)
     }
-    // Trigger Prev Page
+    // Pagination Controller -> Trigger Prev Page
     const prevPage = () => {
         setLoader(true)
         saveData(dataId || "", parseInt(currentEpisode) - 1)
@@ -242,17 +240,19 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
             {isLoading ?
                 <div className="w-full">
                     <Skeleton className="mb-10 mt-10 xl:mt-4 rounded-3xl custom-transition-duration w-full h-[2rem]"/>
-                    {Array.from({ length: 10 }, (_, index) => (
+                    {Array.from({ length: 15 }, (_, index) => (
                             <Skeleton key={index} className="mt-4 rounded-3xl custom-transition-duration w-full h-[1rem]"/>
                         ))
                     }
                 </div>
                 :
                 <div className="mt-5 xl:mt-0 xl:mb-4">
-                    {/* Episode Number */}
-                    <p className={`text-xl font-semibold custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
+                    {/* Episode Number */
+                    animeData?.type !== "MOVIE" &&
+                        <p className={`text-xl font-semibold custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
                             Episode {currentEpisode}
-                    </p>
+                        </p>
+                    }
 
                     {/* Title */}
                     <p className={`text-2xl sm:text-3xl md:text-4xl mt-4 custom-font-rocksalt custom-transition-duration
@@ -280,9 +280,9 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                         </p>
                         {/* Episodes */}
                         <p className={`text-base custom-transition-duration ${isCheckedTheme ? 'text-custom-gray-1' : 'text-custom-dark-1'}`}>
-                            Total Episodes :&nbsp;
+                            {animeData?.type !== "MOVIE" ? `Total Episodes` : `Type`} :&nbsp;
                             <span className={`text-lg font-medium custom-transition-duration  ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>
-                                {animeData?.totalEpisodes}
+                                {animeData?.type !== "MOVIE" ? animeData?.totalEpisodes : animeData?.type.charAt(0)+animeData?.type.slice(1).toLowerCase()}
                             </span>
                         </p>
                         {/* Status */}
@@ -315,7 +315,14 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                                         `}
                                         onClick={() => { setServerName(res?.name); setUrlValue(res?.url) ; setLoader(!loader) }}
                                     >
-                                        {res?.name}
+                                        {res?.name} 
+                                        {
+                                            res?.name === "Streamwish" ?
+                                                <span className="text-xs 400size:text-sm">&nbsp;| no ads</span>
+                                            :
+                                            res?.name === "Filelions" &&
+                                                <span className="text-xs 400size:text-sm">&nbsp;| no ads</span>
+                                        }
                                     </div>
                                 ))}
 

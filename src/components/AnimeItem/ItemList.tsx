@@ -46,11 +46,11 @@ export const ItemList = ({id, title, image, episodeNumber} : ItemProps ) => {
                 </p>
 
                 {/* Total Episodes */}
-                <p className="text-sm text-custom-gray-1 mt-1">• {episodeNumber} {episodeNumber === 1 ? 'episode' : 'episodes'}</p>
+                <p className="text-sm text-custom-gray-1 text-center sm:text-left mt-1">• {episodeNumber} {episodeNumber === 1 ? 'episode' : 'episodes'}</p>
             </div>
         </div>
 
-        <p className="text-sm text-custom-gray-1 mt-1 cursor-pointer hover:underline hover:text-custom-blue-1"
+        <p className="text-center sm:text-left text-sm text-custom-gray-1 mt-1 cursor-pointer hover:underline hover:text-custom-blue-1"
             onClick={() => removeFromList(id)}
         >
             Remove from list
