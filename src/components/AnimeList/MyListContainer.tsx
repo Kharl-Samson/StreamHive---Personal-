@@ -1,7 +1,6 @@
 import { useAppStore, useMyListPersist } from "../../store/ZustandStore"
 import { useEffect, useState } from "react"
 import { SkeletonLoading } from "../Skeleton/SkeletonLoading"
-import { useNavigate } from "react-router-dom"
 import { ItemList } from "../AnimeItem/ItemList"
 
 type ListContainerProps = {
