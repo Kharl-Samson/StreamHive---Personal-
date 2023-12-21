@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, MouseEvent } from "react"
 import { NavlinksSmall } from "../../components/Navbar/components/NavlinksSmall"
 import { useAppStore } from "../../store/ZustandStore"
 import "./HamburgerMenu.css"
@@ -14,9 +14,9 @@ export const HamburgerMenu = () => {
     }
 
     // Menu Controller
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const [anchorEl, setAnchorEl] = useState<HTMLLabelElement | null>(null)
     const open = Boolean(anchorEl)
-    const handleClick = (event: any) => {
+    const handleClick = (event: MouseEvent<HTMLLabelElement>) => {
         setAnchorEl(event.currentTarget)
     }
     const handleClose = () => {

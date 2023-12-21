@@ -3,12 +3,12 @@ import heroData from "../../../data/heroData"
 import { Button } from "../../../widgets/button/Button"
 import playIcon from "../../../assets/icons/play.png"
 import bookmark from "../../../assets/icons/bookmark.png"
-import onErrorImage from "../../../assets/onErrorImage.png"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
 import { useAppStore } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 import { addToList } from "@/utils/saveData"
+import { handleImageError } from "@/types/errorTypes"
 
 type HeroData = {
     id : string,
@@ -54,6 +54,7 @@ export const HeroSection = () => {
     
     // Blur Effect in Lazy load
     const [imageLoaded, setImageLoaded] = useState<boolean>(false)
+
   return (
     <div 
         className="lg:pb-[26rem] custom-gradient-bg-dark flex" 
@@ -72,7 +73,7 @@ export const HeroSection = () => {
               className="max-w-[85%] lg:min-w-[20rem] max-h-[26rem] sm:max-w-md mx-auto lg:mx-0 object-cover rounded-3xl"
               alt="Anime Image"
               src={dataArray?.image}
-              onError={(e : any )=>{ e.target.onerror = null; e.target.src= onErrorImage}}
+              onError={handleImageError}
             />
 
             <div className="mt-0 lg:mt-4">

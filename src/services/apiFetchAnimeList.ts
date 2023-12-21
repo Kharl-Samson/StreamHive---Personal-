@@ -11,8 +11,14 @@ export const getAnimeList = async (category : string, page?: number) => {
       },
     })
     return response.data
-  } catch (error : any) {
-    throw new Error(error.response?.data)
+  } catch (error : unknown | string) {
+    if (typeof error === 'string') {
+      throw new Error(error)
+    } else if (error instanceof Error) {
+      throw error
+    } else {
+      throw new Error('An unknown error occurred.');
+    }
   }
 }
 
@@ -24,8 +30,14 @@ export const getAnime = async (id : string) => {
       },
     })
     return response.data
-  } catch (error : any) {
-    throw new Error(error.response?.data)
+  } catch (error : unknown | string) {
+    if (typeof error === 'string') {
+      throw new Error(error)
+    } else if (error instanceof Error) {
+      throw error
+    } else {
+      throw new Error('An unknown error occurred.');
+    }
   }
 }
 
@@ -37,7 +49,13 @@ export const getAnimeEpisode = async (episodeId : string) => {
       },
     })
     return response.data
-  } catch (error : any) {
-    throw new Error(error.response?.data)
+  } catch (error : unknown | string) {
+    if (typeof error === 'string') {
+      throw new Error(error)
+    } else if (error instanceof Error) {
+      throw error
+    } else {
+      throw new Error('An unknown error occurred.');
+    }
   }
 }

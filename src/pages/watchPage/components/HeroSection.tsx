@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Player } from "@/components/VideoPlayer/Player"
 import { saveData } from "@/utils/saveData"
+import { animeDataType, episodeDataType } from "@/types/animeTypes"
 
 type HeroSectionProps = {
-    animeData : any
-    episodeData : any
+    animeData : animeDataType
+    episodeData : episodeDataType
     fakeRating : number | undefined
     isLoading : boolean
     dataId? : string
@@ -23,8 +24,8 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Episode Numder Data
     const inputString : string = myEpisodeId
-    const arrayFromString : any = inputString.split("-")
-    const currentEpisode : any = arrayFromString[arrayFromString?.length - 1]
+    const arrayFromString : string[] = inputString.split("-")
+    const currentEpisode : number = parseInt(arrayFromString[arrayFromString?.length - 1])
 
     // Description trimmer
     const [showFullDescription, setShowFullDescription] = useState<boolean>(false)
@@ -45,11 +46,11 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger When Page Loads
     useEffect(() => {
-        const streamwishUrl = episodeData?.find((item : any) => item?.name === "Streamwish")
-        const filelionsUrl = episodeData?.find((item : any) => item?.name === "Filelions")
-        const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
-        const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
-        const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
+        const streamwishUrl = episodeData?.find((item) => item?.name === "Streamwish")
+        const filelionsUrl = episodeData?.find((item) => item?.name === "Filelions")
+        const vidstreamingUrl = episodeData?.find((item) => item?.name === "Vidstreaming")
+        const gogoServerUrl = episodeData?.find((item) => item?.name === "Gogo server")
+        const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
 
         if (streamwishUrl) {
             setServerName("Streamwish")
@@ -78,11 +79,11 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger Every Time this data changed -> episodeData, urlValue, isLoading, serverName
     useEffect(() => {
-        const streamwishUrl = episodeData?.find((item : any) => item?.name === 'Streamwish')
-        const filelionsUrl = episodeData?.find((item : any) => item?.name === 'Filelions')
-        const vidstreamingUrl = episodeData?.find((item : any) => item?.name === "Vidstreaming")
-        const gogoServerUrl = episodeData?.find((item : any) => item?.name === "Gogo server")
-        const mp4UploadUrl = episodeData?.find((item : any) => item?.name === "Mp4Upload")
+        const streamwishUrl = episodeData?.find((item) => item?.name === 'Streamwish')
+        const filelionsUrl = episodeData?.find((item) => item?.name === 'Filelions')
+        const vidstreamingUrl = episodeData?.find((item) => item?.name === "Vidstreaming")
+        const gogoServerUrl = episodeData?.find((item) => item?.name === "Gogo server")
+        const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
 
         if (streamwishUrl?.name === serverName) {
             setServerName("Streamwish")
@@ -92,15 +93,15 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
             setServerName("Filelions")
             setFrameUrl(filelionsUrl?.url || '')
         } 
-        else if (vidstreamingUrl === serverName){
+        else if (vidstreamingUrl?.name === serverName){
             setServerName("Vidstreaming")
             setFrameUrl(vidstreamingUrl?.url || '')
         }
-        else if (gogoServerUrl === serverName){
+        else if (gogoServerUrl?.name === serverName){
             setServerName("Gogo server")
             setFrameUrl(gogoServerUrl?.url || '')
         }
-        else if (mp4UploadUrl === serverName){
+        else if (mp4UploadUrl?.name === serverName){
             setServerName("Mp4Upload")
             setFrameUrl(mp4UploadUrl?.url || '')
         }
@@ -121,7 +122,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     },[loader, isLoading])
 
     // Iframe Ref
-    const iframeRef = useRef<any>(null)
+    const iframeRef = useRef<HTMLIFrameElement | null>(null)
 
     // To Full Screen Iframe
     const handleFullscreen = () => {
@@ -130,12 +131,15 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     
           if (iframe.requestFullscreen) {
             iframe.requestFullscreen()
-          } else if (iframe.webkitRequestFullscreen) {
-            iframe.webkitRequestFullscreen()
-          } else if (iframe.mozRequestFullScreen) {
-            iframe.mozRequestFullScreen()
-          } else if (iframe.msRequestFullscreen) {
-            iframe.msRequestFullscreen()
+          } 
+          else if ((iframe as any).webkitRequestFullscreen) {
+            (iframe as any).webkitRequestFullscreen()
+          } 
+          else if ((iframe as any).mozRequestFullScreen) {
+            (iframe as any).mozRequestFullScreen()
+          } 
+          else if ((iframe as any).msRequestFullscreen) {
+            (iframe as any).msRequestFullscreen()
           }
         }
     }
@@ -146,14 +150,14 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     // Pagination Controller -> Trigger Next Page
     const nextPage = () => {
         setLoader(true)
-        saveData(dataId || "", parseInt(currentEpisode) + 1)
-        navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) + 1}`)
+        saveData(dataId || "", currentEpisode + 1)
+        navigate(`/watch/${dataId}/${dataId}-episode-${currentEpisode + 1}`)
     }
     // Pagination Controller -> Trigger Prev Page
     const prevPage = () => {
         setLoader(true)
-        saveData(dataId || "", parseInt(currentEpisode) - 1)
-        navigate(`/watch/${dataId}/${dataId}-episode-${parseInt(currentEpisode) - 1}`)
+        saveData(dataId || "", currentEpisode - 1)
+        navigate(`/watch/${dataId}/${dataId}-episode-${currentEpisode - 1}`)
     }
   
   return (
@@ -192,7 +196,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                 
                 <div className="flex flex-wrap sm:justify-end gap-3 w-full 500size:w-auto">
                     {/* Prev Button */
-                    parseInt(currentEpisode) !== 1 &&
+                    currentEpisode !== 1 &&
                         <button 
                             className={`text-white bg-custom-blue-1 py-2 rounded-md w-full 500size:w-[10rem] 
                                 disable-highlight custom-transition-duration sm:hover:bg-custom-dark-2 
@@ -204,7 +208,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                     }
                     
                     {/* Next Button */
-                    animeData?.totalEpisodes !== parseInt(currentEpisode) &&
+                    animeData?.totalEpisodes !== currentEpisode &&
                         <button 
                           className={`text-white bg-custom-blue-1 py-2 rounded-md w-full 500size:w-[10rem] 
                               disable-highlight custom-transition-duration sm:hover:bg-custom-dark-2 
@@ -308,7 +312,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                         <div className="mt-6">
                             <p className={`text-lg font-bold custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>Available Servers</p>
                             <div className="flex flex-wrap mt-4 gap-5">
-                                {episodeData && episodeData.map((res : any, index : number) => (
+                                {episodeData && episodeData.map((res, index : number) => (
                                     <div key={index} className={`rounded text-xs 400size:text-sm py-2 px-5 flex justify-center disable-highlight 
                                         cursor-pointer hover:opacity-90 active:scale-95 text-white
                                         ${serverName === res?.name ? 'bg-custom-blue-1' : 'bg-[#141D2B]'}

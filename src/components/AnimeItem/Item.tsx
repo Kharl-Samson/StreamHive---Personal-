@@ -1,8 +1,8 @@
 import { useAppStore } from "../../store/ZustandStore"
 import { LazyLoadImage } from "react-lazy-load-image-component"
-import onErrorImage from "../../assets/onErrorImage.png"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { handleImageError } from "@/types/errorTypes"
 
 type ItemProps = {
     id : string
@@ -35,7 +35,7 @@ export const Item = ({id, title, image, genres, episodeNumber, releaseDate} : It
               className={`rounded-2xl w-full h-[20rem] 1220size:h-[17rem] 2xl:h-[20rem] object-cover ${!isCheckedTheme && 'custom-shadow-button'}`}
               alt="Anime Image"
               src={image}
-              onError={(e : any )=>{ e.target.onerror = null; e.target.src= onErrorImage}}
+              onError={handleImageError}
             />
 
             {/* Name */}

@@ -33,6 +33,7 @@ export const saveData = (animeId: string, watchedEpisode: number) => {
     }
 }
 
+// Add to MyList
 export const addToList = (animeId: string, animeName: string, animeImage: string, totalEpisodes : number) => {
     // My list Storage Data
     const { myListDetails, setMyListDetails } = useMyListPersist.getState()
@@ -66,6 +67,7 @@ export const addToList = (animeId: string, animeName: string, animeImage: string
     }
 }
 
+// Remove from My List
 export const removeFromList = (animeIdToRemove: string) => {
   // My list Storage Data
   const { myListDetails, setMyListDetails } = useMyListPersist.getState()

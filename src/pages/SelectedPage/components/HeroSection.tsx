@@ -2,16 +2,17 @@ import { useEffect, useState } from "react"
 import { Button } from "../../../widgets/button/Button"
 import playIcon from "../../../assets/icons/play.png"
 import bookmark from "../../../assets/icons/bookmark.png"
-import onErrorImage from "../../../assets/onErrorImage.png"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
 import { useAppStore, useAnimeDataPersist } from "../../../store/ZustandStore"
 import { useNavigate } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
 import { addToList, saveData } from "@/utils/saveData"
+import { handleImageError } from "@/types/errorTypes"
+import { animeDataType } from "@/types/animeTypes"
 
 type HeroSectionProps = {
-    animeData : any
+    animeData : animeDataType
     fakeRating : number | undefined
     isLoading : boolean
 }
@@ -80,7 +81,7 @@ export const HeroSection = ( { animeData, fakeRating, isLoading } : HeroSectionP
                   className="max-w-[85%] lg:min-w-[20rem] max-h-[26rem] sm:max-w-md mx-auto lg:mx-0 object-cover rounded-3xl"
                   alt="Anime Image"
                   src={animeData?.image}
-                  onError={(e : any )=>{ e.target.onerror = null; e.target.src= onErrorImage}}
+                  onError={handleImageError}
                 />
             }
 

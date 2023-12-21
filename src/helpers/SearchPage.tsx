@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, ChangeEvent, FormEvent } from "react"
 import { ListContainer } from "../components/AnimeList/ListContainer"
 import { Footer } from "../components/Footer/Footer"
 import { Navbar } from "../components/Navbar/Navbar"
@@ -14,9 +14,9 @@ export const SearchPage = () => {
     // Search Controller
     const [hasSearch, setHasSearch] = useState<boolean>(false)
     const [inputValue, setInputValue] = useState<string>('')
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => setInputValue(event.target.value)
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => setInputValue(event.target.value)
     const [animeName, setAnimeName] = useState<string>('')
-    const searchAnime = (event : any) => {
+    const searchAnime = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setAnimeName(inputValue)
         setHasSearch(true)

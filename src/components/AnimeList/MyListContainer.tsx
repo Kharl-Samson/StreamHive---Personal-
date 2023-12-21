@@ -2,6 +2,7 @@ import { useAppStore, useMyListPersist } from "../../store/ZustandStore"
 import { useEffect, useState } from "react"
 import { SkeletonLoading } from "../Skeleton/SkeletonLoading"
 import { ItemList } from "../AnimeItem/ItemList"
+import { ItemListType } from "@/types/itemTypes"
 
 type ListContainerProps = {
   title : string
@@ -57,9 +58,9 @@ export const MyListContainer = ({ title, description, spacing } : ListContainerP
                       <p className={`text-base ${isCheckedTheme ? 'text-custom-gray-4 ' : 'text-custom-dark-2'}`}>You have no item in your list.</p>
                     </div>
                   :
-                  myListDetails.map((res: any , index : number) => (
+                  myListDetails.map((res: ItemListType) => (
                     <ItemList
-                      key = {index}
+                      key = {res?.animeId}
                       id = {res?.animeId}
                       title = {res?.animeName}
                       image = {res?.animeImage}

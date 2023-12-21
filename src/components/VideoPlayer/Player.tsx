@@ -1,16 +1,16 @@
-import { useEffect } from "react"
+import { RefObject, useEffect } from "react"
 
 type PlayerProps = {
     dataUrl : string
     serverName : string
-    iframeRef : any
+    iframeRef: RefObject<HTMLIFrameElement>
     frameStyle : string
 }
 
-export const Player = ({dataUrl, serverName, iframeRef, frameStyle} :PlayerProps ) => {
+export const Player = ({dataUrl, serverName, iframeRef, frameStyle} : PlayerProps) => {
     // Dynamic Iframe Height
     useEffect(() => {
-      const handleHeight = (event : any) => {
+      const handleHeight = (event : MessageEvent) => {
         if (iframeRef.current && event.data && event.data.type === 'iframeHeight') {
           iframeRef.current.style.height = `${event.data.height}px`
         }

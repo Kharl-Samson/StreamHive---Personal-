@@ -5,6 +5,7 @@ import { Item } from "../AnimeItem/Item"
 import { getAnimeList } from "../../services/apiFetchAnimeList"
 import { SkeletonLoading } from "../Skeleton/SkeletonLoading"
 import { useNavigate } from "react-router-dom"
+import { ItemType } from "@/types/itemTypes"
 
 type ListContainerProps = {
   fetchCategory : string
@@ -166,7 +167,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
                       <p className={`text-base ${isCheckedTheme ? 'text-custom-gray-4 ' : 'text-custom-dark-2'}`}>No data found for "{fetchCategory}".</p>
                     </div>
                   :
-                  combinedData?.results?.map((res: any) => (
+                  combinedData?.results?.map((res: ItemType) => (
                     <Item
                       key = {res?.id}
                       id = {res?.id}

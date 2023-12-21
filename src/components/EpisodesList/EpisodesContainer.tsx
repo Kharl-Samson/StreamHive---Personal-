@@ -4,9 +4,10 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useAppStore, useAnimeDataPersist } from '@/store/ZustandStore'
 import { saveData } from '@/utils/saveData'
 import { useNavigate } from 'react-router-dom'
+import { animeDataType } from '@/types/animeTypes'
 
 type EpisodesContainerProps = {
-    animeData : any
+    animeData : animeDataType
     isLoading : boolean
     myEpisodeId? : string
 }
@@ -29,8 +30,8 @@ export const EpisodesContainer = ({ animeData, isLoading, myEpisodeId } : Episod
 
     // Episode Numder Data
     const inputString : string = myEpisodeId || ""
-    const arrayFromString : any = inputString.split("-")
-    const currentEpisode : any = arrayFromString[arrayFromString?.length - 1]
+    const arrayFromString : string[] = inputString.split("-")
+    const currentEpisode : number = parseInt(arrayFromString[arrayFromString?.length - 1])
 
     // Range Dropdown
     const [ranges, setRanges] = useState<string[]>([])
@@ -46,7 +47,7 @@ export const EpisodesContainer = ({ animeData, isLoading, myEpisodeId } : Episod
 
     useEffect(() => {
       setSelectedRange(findRangeForEpisode(currentEpisode))
-      myEpisodeId && saveData(animeData?.id, parseInt(currentEpisode))
+      myEpisodeId && saveData(animeData?.id, currentEpisode)
 
       const selectedValue = findRangeForEpisode(currentEpisode)
       if (selectedValue !== '') {
@@ -229,7 +230,7 @@ export const EpisodesContainer = ({ animeData, isLoading, myEpisodeId } : Episod
                         <Skeleton key={index} className="rounded w-full h-[2rem]"/>
                 )) 
             :
-                animeData?.episodes?.map((res: any) => {
+                animeData?.episodes?.map((res) => {
                   if (res?.number && page?.startPage <= res.number && res.number <= page?.endPage) {
                     const isWatched = animeDetails.find(item => item.animeId === animeData?.id && item.watchedEpisode.includes(res?.number))
                     const lastWatched = animeDetails.find(item => item.animeId === animeData?.id)?.watchedEpisode.slice(-1)[0]
