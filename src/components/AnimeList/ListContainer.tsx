@@ -6,6 +6,7 @@ import { getAnimeList } from "../../services/apiFetchAnimeList"
 import { SkeletonLoading } from "../Skeleton/SkeletonLoading"
 import { useNavigate } from "react-router-dom"
 import { ItemType } from "@/types/itemTypes"
+import { toast } from "react-toastify"
 
 type ListContainerProps = {
   fetchCategory : string
@@ -48,7 +49,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
     }
 
     // Getting Anime Data List -> First Data - 1st Page
-    const { data: dataPage1, isFetched: isFetchedPage1 } = useQuery(
+    const { data: dataPage1, isFetched: isFetchedPage1, isError: isPage1Error } = useQuery(
       [
         type === "Trending" ? "animeDataTrending1" 
         : 
@@ -64,7 +65,7 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
       () => getAnimeList(fetchCategory, pageParams?.firstParams)
     )
     // Getting Anime Data List -> Second Data - 2nd Page
-    const { data: dataPage2, isFetched: isFetchedPage2 } = useQuery(
+    const { data: dataPage2, isFetched: isFetchedPage2, isError: isPage2Error } = useQuery(
       [
         type === "Trending" ? "animeDataTrending2" 
         : 
@@ -94,13 +95,17 @@ export const ListContainer = ({ fetchCategory, type, title, description, spacing
     const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
       setIsLoading(true)
-      if(isFetchedPage1 && isFetchedPage2){
+      if(isFetchedPage1 && isFetchedPage2 && !isPage1Error && !isPage2Error){
         const timer = setTimeout(() => {
           setIsLoading(false)
         }, 500)
         return () => clearTimeout(timer)
       }
-    }, [isFetchedPage1, isFetchedPage2, pageParams])
+      else if(isPage1Error || isPage2Error){
+        toast.error("The request is invalid. Please try again!")
+        navigate("/")
+      }
+    }, [isFetchedPage1, isFetchedPage2, pageParams, isPage1Error, isPage2Error])
            
   return (
     <section className={`min-h-[50rem] w-full custom-transition-duration pb-20 lg:pb-0 ${isCheckedTheme ? 'bg-custom-dark-1' : 'bg-white'}`}>

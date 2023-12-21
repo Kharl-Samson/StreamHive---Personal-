@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Footer } from "../../components/Footer/Footer"
 import { Navbar } from "../../components/Navbar/Navbar"
 import { useQuery } from "react-query"
 import { getAnime, getAnimeEpisode } from "@/services/apiFetchAnimeList"
 import { useEffect, useState } from "react"
-
+import { toast } from "react-toastify"
 import { ListContainer } from "@/components/AnimeList/ListContainer"
 import { EpisodesContainer } from "@/components/EpisodesList/EpisodesContainer"
 import { HeroSection } from "./components/HeroSection"
@@ -15,14 +15,17 @@ export const Watch = () => {
     const myDataId = dataId || ""
     const myEpisodeId = episodeId || ""
 
+    // Page Navigator
+    const navigate = useNavigate()
+
     // Getting Anime Data  
-    const { data: animeData, isFetched: isAnimeDataFetch } = useQuery(
+    const { data: animeData, isFetched: isAnimeDataFetch, isError: isAnimeDataError } = useQuery(
         ["animeDataKey", myDataId, myEpisodeId],
         () => getAnime(myDataId)
     )
 
     // Gettin Current Episode Stream URL
-    const { data: episodeData, isFetched: isEpisodeFetch } = useQuery(
+    const { data: episodeData, isFetched: isEpisodeFetch, isError: isEpisodeDataError } = useQuery(
         ["episodeDataKey", myDataId, myEpisodeId],
         () => getAnimeEpisode(myEpisodeId)
     )
@@ -45,11 +48,15 @@ export const Watch = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
         setIsLoading(true)
-        if(isAnimeDataFetch && isEpisodeFetch){
+        if(isAnimeDataFetch && isEpisodeFetch && !isAnimeDataError && !isEpisodeDataError){
           const timer = setTimeout(() => {
             setIsLoading(false)
           }, 500)
           return () => clearTimeout(timer)
+        }
+        else if(isAnimeDataError || isEpisodeDataError){
+          toast.error("The request is invalid. Please try again!")
+          navigate("/")
         }
     },[isAnimeDataFetch, isEpisodeFetch, dataId])
 

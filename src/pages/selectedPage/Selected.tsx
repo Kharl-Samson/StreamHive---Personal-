@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Footer } from "../../components/Footer/Footer"
 import { Navbar } from "../../components/Navbar/Navbar"
 import { HeroSection } from "./components/HeroSection"
@@ -7,14 +7,18 @@ import { getAnime } from "@/services/apiFetchAnimeList"
 import { useEffect, useState } from "react"
 import { EpisodesContainer } from "../../components/EpisodesList/EpisodesContainer"
 import { ListContainer } from "@/components/AnimeList/ListContainer"
+import { toast } from "react-toastify"
 
 export const Selected = () => {
     // Params ID
     const { dataId } = useParams()
     const id = dataId || ""
+
+    // Page Navigator
+    const navigate = useNavigate()
     
     // Getting Anime Data  
-    const { data: animeData, isFetched: isAnimeDataFetch } = useQuery(
+    const { data: animeData, isFetched: isAnimeDataFetch, isError: isAnimeDataError } = useQuery(
         ["animeDataKey", id],
         () => getAnime(id)
     )
@@ -37,13 +41,17 @@ export const Selected = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
         setIsLoading(true)
-        if(isAnimeDataFetch){
+        if(isAnimeDataFetch && !isAnimeDataError){
           const timer = setTimeout(() => {
             setIsLoading(false)
           }, 500)
           return () => clearTimeout(timer)
         }
-    },[isAnimeDataFetch, dataId])
+        else if(isAnimeDataError){
+          toast.error("The request is invalid. Please try again!")
+          navigate("/")
+        }
+    },[isAnimeDataFetch, isAnimeDataError, dataId])
     
   return (
     <>
