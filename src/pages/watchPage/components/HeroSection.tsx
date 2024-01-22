@@ -229,8 +229,8 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                         h-auto min-h-[16.5rem] 580size:min-h-[17rem]
                         600size:min-h-[21rem] 700size:min-h-[24rem] 800size:min-h-[27rem]
                         900size:min-h-[30rem] 1000size:min-h-[32rem] 1100size:min-h-[36rem] 
-                        1220size:min-h-[38rem] xl:min-h-0
-                        mx-auto xl:mx-0 object-cover rounded-3xl ${isLoading || loader ? 'block' : 'hidden'}`}
+                        1220size:min-h-[38rem] xl:min-h-0 mx-auto xl:mx-0
+                        object-cover ${isLoading || loader ? 'block' : 'hidden'}`}
                 />
 
                 {/* Video Player */}
