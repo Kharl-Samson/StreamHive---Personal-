@@ -6,20 +6,20 @@ export const Latest = () => {
 
   return (
     <>
-        {/* Navbar */}
-        <Navbar active = "Latest"/>
+      {/* Navbar */}
+      <Navbar active = "Latest"/>
 
-        {/* Trending Now Section */}
-        <ListContainer 
-          fetchCategory = "recent-episodes"
-          type = "Latest"
-          title = "Latest Release"
-          description = "Keep yourself informed and in the loop with the most recent releases!"
-          spacing = "lg:pt-10 lg:pb-20"
-        />
+      {/* Trending Now Section */}
+      <ListContainer 
+        fetchCategory = "recent-episodes"
+        type = "Latest"
+        title = "Latest Release"
+        description = "Keep yourself informed and in the loop with the most recent releases!"
+        spacing = "lg:pt-10 lg:pb-20"
+      />
 
-        {/* Footer Section */}
-        <Footer/>
+      {/* Footer Section */}
+      <Footer/>
     </>
   )
 }

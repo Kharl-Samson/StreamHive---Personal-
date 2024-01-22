@@ -6,20 +6,20 @@ export const Trending = () => {
 
   return (
     <>
-        {/* Navbar */}
-        <Navbar active = "Trending"/>
+      {/* Navbar */}
+      <Navbar active = "Trending"/>
 
-        {/* Trending Now Section */}
-        <ListContainer 
-          fetchCategory = "top-airing"
-          type = "Trending"
-          title = "Trending Now"
-          description = "Explore and immerse yourself in the captivating world of the most current and trending anime series available!"
-          spacing = "lg:pt-10 lg:pb-20"
-        />
+      {/* Trending Now Section */}
+      <ListContainer 
+        fetchCategory = "top-airing"
+        type = "Trending"
+        title = "Trending Now"
+        description = "Explore and immerse yourself in the captivating world of the most current and trending anime series available!"
+        spacing = "lg:pt-10 lg:pb-20"
+      />
 
-        {/* Footer Section */}
-        <Footer/>
+      {/* Footer Section */}
+      <Footer/>
     </>
   )
 }

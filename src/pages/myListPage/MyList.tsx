@@ -6,18 +6,18 @@ export const MyList = () => {
 
   return (
     <>
-        {/* Navbar */}
-        <Navbar active = "My List"/>
+      {/* Navbar */}
+      <Navbar active = "My List"/>
 
-        {/* Trending Now Section */}
-        <MyListContainer 
-          title = "My List"
-          description = "Check out the collection of an anime you've added!"
-          spacing = "lg:pt-10 lg:pb-20"
-        />
+      {/* Trending Now Section */}
+      <MyListContainer 
+        title = "My List"
+        description = "Check out the collection of an anime you've added!"
+        spacing = "lg:pt-10 lg:pb-20"
+      />
 
-        {/* Footer Section */}
-        <Footer/>
+      {/* Footer Section */}
+      <Footer/>
     </>
   )
 }

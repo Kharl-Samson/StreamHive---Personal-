@@ -24,8 +24,8 @@ export const EpisodesContainer = ({ animeData, isLoading, myEpisodeId } : Episod
 
     // Pagination Controller
     const [page, setPage] = useState<{ startPage: number; endPage: number }>({
-        startPage: 1,
-        endPage: 100,
+      startPage: 1,
+      endPage: 100,
     })
 
     // Episode Numder Data

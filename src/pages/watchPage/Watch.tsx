@@ -20,44 +20,44 @@ export const Watch = () => {
 
     // Getting Anime Data  
     const { data: animeData, isFetched: isAnimeDataFetch, isError: isAnimeDataError } = useQuery(
-        ["animeDataKey", myDataId, myEpisodeId],
-        () => getAnime(myDataId)
+      ["animeDataKey", myDataId, myEpisodeId],
+      () => getAnime(myDataId)
     )
 
     // Gettin Current Episode Stream URL
     const { data: episodeData, isFetched: isEpisodeFetch, isError: isEpisodeDataError } = useQuery(
-        ["episodeDataKey", myDataId, myEpisodeId],
-        () => getAnimeEpisode(myEpisodeId)
+      ["episodeDataKey", myDataId, myEpisodeId],
+      () => getAnimeEpisode(myEpisodeId)
     )
     
     // Getting Random Rating
     const ratingData : number[] = [
-        9.9, 9.8, 9.7, 9.6, 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 
-        8.9, 8.8, 8.7, 8.6, 8.5, 8.4, 8.3, 8.2, 8.1, 8.0,
-        7.9, 7.8, 7.7, 7.6, 7.5, 7.4, 7.3, 7.2, 7.1, 7.0
+      9.9, 9.8, 9.7, 9.6, 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 
+      8.9, 8.8, 8.7, 8.6, 8.5, 8.4, 8.3, 8.2, 8.1, 8.0,
+      7.9, 7.8, 7.7, 7.6, 7.5, 7.4, 7.3, 7.2, 7.1, 7.0
     ]
     const [fakeRating, setFakeRating] = useState<number>()
     
     // Setting up fake rating once the page is loaded
     useEffect(() => {
-        const randomNumber = Math.random() * ratingData.length
-        setFakeRating(ratingData[Math.floor(randomNumber)])
+      const randomNumber = Math.random() * ratingData.length
+      setFakeRating(ratingData[Math.floor(randomNumber)])
     },[])
     
     // Setting timeout for skeleton
     const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
-        setIsLoading(true)
-        if(isAnimeDataFetch && isEpisodeFetch && !isAnimeDataError && !isEpisodeDataError){
-          const timer = setTimeout(() => {
-            setIsLoading(false)
-          }, 500)
-          return () => clearTimeout(timer)
-        }
-        else if(isAnimeDataError || isEpisodeDataError){
-          toast.error("The request is invalid. Please try again!")
-          navigate("/")
-        }
+      setIsLoading(true)
+      if(isAnimeDataFetch && isEpisodeFetch && !isAnimeDataError && !isEpisodeDataError){
+        const timer = setTimeout(() => {
+          setIsLoading(false)
+        }, 500)
+        return () => clearTimeout(timer)
+      }
+      else if(isAnimeDataError || isEpisodeDataError){
+        toast.error("The request is invalid. Please try again!")
+        navigate("/")
+      }
     },[isAnimeDataFetch, isEpisodeFetch, dataId])
 
     
@@ -68,21 +68,21 @@ export const Watch = () => {
 
         {/* Hero Section */}
         <HeroSection 
-            animeData = {animeData} 
-            episodeData = {episodeData}
-            fakeRating = {fakeRating}
-            isLoading = {isLoading}
-            dataId = {dataId}
-            myEpisodeId = {myEpisodeId}
+          animeData = {animeData} 
+          episodeData = {episodeData}
+          fakeRating = {fakeRating}
+          isLoading = {isLoading}
+          dataId = {dataId}
+          myEpisodeId = {myEpisodeId}
         />
 
 
         {/* Episodes Container */
         animeData?.type !== "MOVIE" &&
           <EpisodesContainer
-              animeData = {animeData} 
-              isLoading = {isLoading}
-              myEpisodeId = {myEpisodeId}
+            animeData = {animeData} 
+            isLoading = {isLoading}
+            myEpisodeId = {myEpisodeId}
           />
         }
 
