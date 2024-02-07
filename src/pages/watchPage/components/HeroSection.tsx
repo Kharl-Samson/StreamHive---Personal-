@@ -46,19 +46,20 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger When Page Loads
     useEffect(() => {
-        const filelionsUrl = episodeData?.find((item) => item?.name === "Filelions")
         const streamwishUrl = episodeData?.find((item) => item?.name === "Streamwish")
+        const filelionsUrl = episodeData?.find((item) => item?.name === "Filelions")
         const vidstreamingUrl = episodeData?.find((item) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item) => item?.name === "Gogo server")
         const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
 
-        if (filelionsUrl) {
-            setServerName("Filelions")
-            setFrameUrl(filelionsUrl?.url || '')
-        } 
-        else if (streamwishUrl) {
+
+        if (streamwishUrl) {
             setServerName("Streamwish")
             setFrameUrl(streamwishUrl?.url || '')
+        } 
+        else if (filelionsUrl) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
         } 
         else if (vidstreamingUrl){
             setServerName("Vidstreaming")
@@ -79,19 +80,20 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
 
     // Trigger Every Time this data changed -> episodeData, urlValue, isLoading, serverName
     useEffect(() => {
-        const filelionsUrl = episodeData?.find((item) => item?.name === 'Filelions')
         const streamwishUrl = episodeData?.find((item) => item?.name === 'Streamwish')
+        const filelionsUrl = episodeData?.find((item) => item?.name === 'Filelions')
         const vidstreamingUrl = episodeData?.find((item) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item) => item?.name === "Gogo server")
         const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
 
-        if (filelionsUrl?.name === serverName) {
-            setServerName("Filelions")
-            setFrameUrl(filelionsUrl?.url || '')
-        } 
-        else if (streamwishUrl?.name === serverName) {
+
+        if (streamwishUrl?.name === serverName) {
             setServerName("Streamwish")
             setFrameUrl(streamwishUrl?.url || '')
+        } 
+        else if (filelionsUrl?.name === serverName) {
+            setServerName("Filelions")
+            setFrameUrl(filelionsUrl?.url || '')
         } 
         else if (vidstreamingUrl?.name === serverName){
             setServerName("Vidstreaming")
@@ -320,7 +322,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                                         onClick={() => { setServerName(res?.name); setUrlValue(res?.url) ; setLoader(!loader) }}
                                     >
                                         {res?.name} 
-                                        {res?.name === "Filelions" && <span className="text-xs 400size:text-sm">&nbsp;| no ads</span>}
+                                        {res?.name === "Filelions to be delete" && <span className="text-xs 400size:text-sm">&nbsp;| no ads</span>}
                                     </div>
                                 ))}
 

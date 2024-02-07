@@ -39,7 +39,7 @@ export const Player = ({dataUrl, serverName, iframeRef, frameStyle} : PlayerProp
         src={dataUrl} 
         {...iframeProps}
         sandbox={
-          serverName === "Filelions"
+          serverName === "Filelions to be delete"
             ? "allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-scripts allow-top-navigation allow-forms"
             : undefined
         }
