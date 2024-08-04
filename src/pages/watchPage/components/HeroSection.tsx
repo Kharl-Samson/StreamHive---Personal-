@@ -47,19 +47,19 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     // Trigger When Page Loads
     useEffect(() => {
         const filelionsUrl = episodeData?.find((item) => item?.name === "Filelions")
-        const streamwishUrl = episodeData?.find((item) => item?.name === "Streamwish")
+        // const streamwishUrl = episodeData?.find((item) => item?.name === "Streamwish")
         const vidstreamingUrl = episodeData?.find((item) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item) => item?.name === "Gogo server")
-        const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
+        // const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
 
         if (filelionsUrl) {
             setServerName("Filelions")
             setFrameUrl(filelionsUrl?.url || '')
         } 
-        else if (streamwishUrl) {
-            setServerName("Streamwish")
-            setFrameUrl(streamwishUrl?.url || '')
-        } 
+        // else if (streamwishUrl) {
+        //     setServerName("Streamwish")
+        //     setFrameUrl(streamwishUrl?.url || '')
+        // } 
         else if (vidstreamingUrl){
             setServerName("Vidstreaming")
             setFrameUrl(vidstreamingUrl?.url || '')
@@ -68,10 +68,10 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
             setServerName("Gogo server")
             setFrameUrl(gogoServerUrl?.url || '')
         }
-        else if (mp4UploadUrl){
-            setServerName("Mp4Upload")
-            setFrameUrl(mp4UploadUrl?.url || '')
-        }
+        // else if (mp4UploadUrl){
+        //     setServerName("Mp4Upload")
+        //     setFrameUrl(mp4UploadUrl?.url || '')
+        // }
         else{
             setServerName("Other Server")
         }
@@ -80,20 +80,20 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
     // Trigger Every Time this data changed -> episodeData, urlValue, isLoading, serverName
     useEffect(() => {
         const filelionsUrl = episodeData?.find((item) => item?.name === 'Filelions')
-        const streamwishUrl = episodeData?.find((item) => item?.name === 'Streamwish')
+        // const streamwishUrl = episodeData?.find((item) => item?.name === 'Streamwish')
         const vidstreamingUrl = episodeData?.find((item) => item?.name === "Vidstreaming")
         const gogoServerUrl = episodeData?.find((item) => item?.name === "Gogo server")
-        const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
+        // const mp4UploadUrl = episodeData?.find((item) => item?.name === "Mp4Upload")
 
 
         if (filelionsUrl?.name === serverName) {
             setServerName("Filelions")
             setFrameUrl(filelionsUrl?.url || '')
         } 
-        else if (streamwishUrl?.name === serverName) {
-            setServerName("Streamwish")
-            setFrameUrl(streamwishUrl?.url || '')
-        } 
+        // else if (streamwishUrl?.name === serverName) {
+        //     setServerName("Streamwish")
+        //     setFrameUrl(streamwishUrl?.url || '')
+        // } 
         else if (vidstreamingUrl?.name === serverName){
             setServerName("Vidstreaming")
             setFrameUrl(vidstreamingUrl?.url || '')
@@ -102,10 +102,10 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
             setServerName("Gogo server")
             setFrameUrl(gogoServerUrl?.url || '')
         }
-        else if (mp4UploadUrl?.name === serverName){
-            setServerName("Mp4Upload")
-            setFrameUrl(mp4UploadUrl?.url || '')
-        }
+        // else if (mp4UploadUrl?.name === serverName){
+        //     setServerName("Mp4Upload")
+        //     setFrameUrl(mp4UploadUrl?.url || '')
+        // }
         else {
             setFrameUrl(episodeData && episodeData[0]?.url)
         }
@@ -314,6 +314,7 @@ export const HeroSection = ( { animeData, episodeData, fakeRating, isLoading, da
                             <p className={`text-lg font-bold custom-transition-duration ${isCheckedTheme ? 'text-white' : 'text-custom-dark-2'}`}>Available Servers</p>
                             <div className="flex flex-wrap mt-4 gap-5">
                                 {episodeData && episodeData.map((res, index : number) => (
+                                (res.name !== "Streamwish" && res.name !== "Mp4Upload") &&
                                     <div key={index} className={`rounded text-xs 400size:text-sm py-2 px-5 flex justify-center disable-highlight 
                                         cursor-pointer hover:opacity-90 active:scale-95 text-white
                                         ${serverName === res?.name ? 'bg-custom-blue-1' : 'bg-[#141D2B]'}
