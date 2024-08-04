@@ -23,7 +23,7 @@ export const getAnimeList = async (category : string, page?: number) => {
 }
 
 export const getAnime = async (id : string) => {
-  try {
+  try { 
     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/anime/gogoanime/info/${id}`, {
       headers: {
         'Content-Type': 'application/json',
